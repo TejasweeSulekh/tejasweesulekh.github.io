@@ -30,7 +30,7 @@ const ParticlesComponent = () => {
           quantity: 1,
         },
         repulse: {
-          distance: 100,
+          distance: 40,
           duration: 0.4,
           strength: 0.5,
         },
@@ -57,7 +57,7 @@ const ParticlesComponent = () => {
           default: 'bounce',
         },
         random: false,
-        speed: 2,
+        speed: 1,
         straight: false,
       },
       number: {
