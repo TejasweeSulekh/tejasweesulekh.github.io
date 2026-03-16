@@ -11,7 +11,7 @@ const Footer = () => {
           <IconButton
             aria-label="GitHub"
             component={Link}
-            href="https://github.com/Tejaswee-Sulekh"
+            href="https://github.com/TejasweeSulekh"
             target="_blank"
             rel="noopener noreferrer"
             color="inherit"
@@ -21,7 +21,7 @@ const Footer = () => {
           <IconButton
             aria-label="LinkedIn"
             component={Link}
-            href="https://www.linkedin.com/in/tejaswee-sulekh/"
+            href="https://www.linkedin.com/in/tejaswee-sulekh-8890781bb/"
             target="_blank"
             rel="noopener noreferrer"
             color="inherit"
@@ -31,7 +31,7 @@ const Footer = () => {
           <IconButton
             aria-label="Email"
             component={Link}
-            href="mailto:tejasweesulekh@gmail.com"
+            href="mailto:t.sulekh312@gmail.com"
             color="inherit"
           >
             <FaEnvelope />
