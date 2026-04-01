@@ -1,24 +1,72 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { AppBar, Toolbar, Typography, Button, Box, IconButton, Menu, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CreateIcon from '@mui/icons-material/Create';
 
 const Header = () => {
   const navItems = ['Home', 'Experience', 'Projects', 'Achievements', 'Skills', 'Contact'];
+  const [anchorElNav, setAnchorElNav] = useState(null);
+
+  const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
+  const handleCloseNavMenu = () => setAnchorElNav(null);
 
   return (
-    <AppBar position="sticky" component="header">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Tejaswee Sulekh
-        </Typography>
-        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-          {navItems.map((item) => (
-            <Button key={item} color="inherit" href={`#${item.toLowerCase()}`}>
-              {item}
-            </Button>
-          ))}
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar position="fixed" component="header" sx={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(18, 18, 18, 0.8)' }}>
+        <Toolbar>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorElNav}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: 'block', md: 'none' } }}
+            >
+              {navItems.map((item) => (
+                <MenuItem key={item} onClick={handleCloseNavMenu} component="a" href={`#${item.toLowerCase()}`}>
+                  <Typography textAlign="center">{item}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: { xs: 1, md: 0 } }}>
+            Tejaswee Sulekh
+          </Typography>
+
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
+            {navItems.map((item) => (
+              <Button key={item} color="inherit" href={`#${item.toLowerCase()}`}>
+                {item}
+              </Button>
+            ))}
+          </Box>
+
+          <Button
+            variant="contained"
+            color="secondary"
+            href="https://tejasweesulekh.github.io/blog/"
+            target="_blank"
+            size="small"
+            startIcon={<CreateIcon />}
+            sx={{
+              borderRadius: '20px',
+              textTransform: 'none',
+              fontWeight: 'bold',
+              boxShadow: '0 4px 14px 0 rgba(244, 143, 177, 0.3)',
+              transition: 'transform 0.2s',
+              '&:hover': { transform: 'scale(1.05)' }
+            }}
+          >
+            Blog
+          </Button>
+        </Toolbar>
+      </AppBar>
+      
+      <Toolbar /> 
+    </>
   );
 };
 

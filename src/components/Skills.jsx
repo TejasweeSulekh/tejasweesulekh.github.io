@@ -1,12 +1,9 @@
 import React from 'react';
 import { Container, Typography, Grid, Card, CardContent, Chip, Box } from '@mui/material';
 import { motion } from 'framer-motion';
+import FadeInView from './FadeInView';
 
-const skills = {
-  "Languages": ["C/C++", "Python", "Bash", "VHDL", "SQL", "LaTeX"],
-  "Frameworks & Libraries": ["TensorFlow", "PyTorch", "Keras", "LangGraph", "RAG", "Streamlit", "NumPy", "Pandas", "OpenCV"],
-  "Tools & Platforms": ["Docker", "Kubernetes", "Kafka", "Redis", "MLflow", "Streamlit", "Git", "WSL", "Excel", "Jupyter Notebook"]
-};
+import { skills } from '../data/portfolioData';
 
 const Skills = () => {
   const itemVariants = {
@@ -25,17 +22,10 @@ const Skills = () => {
       <Typography variant="h4" component="h2" gutterBottom align="center">
         Skills
       </Typography>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} justifyContent="center">
         {Object.entries(skills).map(([category, list], index) => (
-          <Grid item key={category} xs={12} md={4}>
-            <motion.div
-              variants={itemVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: index * 0.2 }}
-              style={{ height: '100%' }}
-            >
+          <Grid item key={category} xs={12} sm={6} md={4}>
+            <FadeInView delay={index * 0.2}>
               <Card sx={{
                 height: '100%',
                 border: '1px solid transparent',
@@ -48,7 +38,7 @@ const Skills = () => {
                 }
               }}>
                 <CardContent>
-                  <Typography variant="h5" component="h3" gutterBottom align="center">
+                  <Typography variant="h5" component="h3" gutterBottom align="center" color="primary.main">
                     {category}
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
@@ -58,7 +48,7 @@ const Skills = () => {
                   </Box>
                 </CardContent>
               </Card>
-            </motion.div>
+            </FadeInView>
           </Grid>
         ))}
       </Grid>

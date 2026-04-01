@@ -1,42 +1,8 @@
 import React from 'react';
-import { Container, Typography, Grid, Card, CardContent, List, ListItem, ListItemText } from '@mui/material';
-import { motion } from 'framer-motion';
-
-const mainProjects = [
-  {
-    title: "Explainable Fraud Detection System",
-    subtitle: "Self Project",
-    points: [
-      "Built an automated MLflow MLOps pipeline, training a 99.96% accuracy XGBoost classifier for imbalanced datasets.",
-      "Created a Kubernetes microservices architecture to process Kafka event streams for real-time inference within 15ms.",
-      "Engineered a ReAct agentic AI workflow via LangGraph, with automated risk reports based on extracted SHAP values.",
-      "Executed a RAG pipeline utilizing LLM embeddings, for historical similarity searches monitored on a live Streamlit."
-    ]
-  }
-];
-
-const academicProjects = [
-  {
-    title: "GPT from Scratch",
-    description: "Engineered a 10M parameter decoder-only transformer from scratch in PyTorch, implementing multi-head self-attention and residual pathways to train a generative model on the Tiny Shakespeare dataset."
-  },
-  {
-    title: "Hierarchical Object Detection",
-    description: "Led a 6-member team to build a multi-label dental X-ray detector using wavelet compression, fine-tuned Co-DETR, and Efficient-Net with Focal loss, increasing accuracy from 72.7% to 78.9%."
-  },
-  {
-    title: "Chest X-Ray Classifier",
-    description: "Trained EfficientNet and ResNet models on a 100k+ image dataset for 14-class disease classification, utilizing Haar wavelets for denoising and decentralized Federated Learning for client-server training."
-  },
-  {
-    title: "Algorithmic Trading Predictor",
-    description: "Developed a customizable LSTM network utilizing OHLCV time-series data to forecast short-term stock prices, integrating a simulated trading module for automated long/short strategy execution."
-  },
-  {
-    title: "Computer Vision Fundamentals",
-    description: "Applied Wavelet transforms, SIFT, and Wiener filtering for image restoration and feature extraction, benchmarking traditional CV algorithms against a custom CNN using OpenCV."
-  }
-];
+import { Container, Typography, Grid, Card, CardContent, List, ListItem, ListItemText, Box, IconButton, Tooltip } from '@mui/material';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { mainProjects, academicProjects } from '../data/portfolioData';
+import FadeInView from './FadeInView';
 
 const Projects = () => {
   return (
@@ -46,13 +12,7 @@ const Projects = () => {
       </Typography>
 
       {mainProjects.map((project, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5 }}
-        >
+        <FadeInView key={index} delay={index * 0.2}>
           <Card sx={{
             mb: 4,
             border: '1px solid transparent',
@@ -65,38 +25,68 @@ const Projects = () => {
             }
           }}>
             <CardContent>
-              <Typography variant="h5" component="h3">
-                {project.title}
-              </Typography>
-              <Typography variant="subtitle1" component="p" color="text.secondary" gutterBottom>
-                {project.subtitle}
-              </Typography>
-              <List dense>
+              {/* Header Row: Title on the left, Icons on the right */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+                <Box>
+                  <Typography variant="h5" component="h3" color="primary.main">
+                    {project.title}
+                  </Typography>
+                  <Typography variant="subtitle1" component="p" color="text.secondary">
+                    {project.subtitle}
+                  </Typography>
+                </Box>
+                
+                {/* Minimalist Icon Links */}
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  {project.githubLink && (
+                    <Tooltip title="View Source Code" placement="top">
+                      <IconButton 
+                        size="small" 
+                        component="a" 
+                        href={project.githubLink} 
+                        target="_blank" 
+                        sx={{ color: 'text.secondary', transition: '0.2s', '&:hover': { color: '#fff', transform: 'scale(1.1)' } }}
+                      >
+                        <FaGithub />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  {project.liveLink && (
+                    <Tooltip title="Live Demo" placement="top">
+                      <IconButton 
+                        size="small" 
+                        component="a" 
+                        href={project.liveLink} 
+                        target="_blank" 
+                        sx={{ color: 'text.secondary', transition: '0.2s', '&:hover': { color: 'secondary.main', transform: 'scale(1.1)' } }}
+                      >
+                        <FaExternalLinkAlt />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Box>
+              </Box>
+
+              <List dense sx={{ mt: 1 }}>
                 {project.points.map((point, i) => (
-                  <ListItem key={i}>
+                  <ListItem key={i} sx={{ px: 0 }}>
                     <ListItemText primary={point} />
                   </ListItem>
                 ))}
               </List>
             </CardContent>
           </Card>
-        </motion.div>
+        </FadeInView>
       ))}
 
       <Typography variant="h5" component="h3" gutterBottom align="center" sx={{mt: 4}}>
         Academic & Course Projects
       </Typography>
+      
       <Grid container spacing={4}>
         {academicProjects.map((project, index) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              whileHover={{ scale: 1.03 }}
-              style={{ height: '100%' }}
-            >
+            <FadeInView key={index} delay={index * 0.2}>
               <Card sx={{
                 height: '100%',
                 border: '1px solid transparent',
@@ -116,7 +106,7 @@ const Projects = () => {
                   </Typography>
                 </CardContent>
               </Card>
-            </motion.div>
+            </FadeInView>
           </Grid>
         ))}
       </Grid>

@@ -13,6 +13,7 @@ function App() {
   return (
     <>
       <ParticlesComponent />
+
       <div style={{ position: 'relative', zIndex: 1, backgroundColor: 'transparent' }}>
         <Header />
         <main>
