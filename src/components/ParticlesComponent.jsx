@@ -106,8 +106,16 @@ const ParticlesComponent = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 2.5, ease: "easeInOut" }} // Smooth 2.5 second fade
-      style={{ willChange: "opacity" }}
+      transition={{ duration: 2.5, ease: "easeInOut" }}
+      style={{ 
+        position: 'fixed',
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        zIndex: -1,
+        willChange: "opacity" 
+      }} 
     >
       <Particles id="tsparticles" init={particlesInit} options={options} />
     </motion.div>
