@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="fixed" component="header" sx={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(18, 18, 18, 0.8)' }}>
+      <AppBar position="fixed" component="header" sx={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(13, 13, 13, 0.8)' }}>
         <Toolbar>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">

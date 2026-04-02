@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Box, Avatar } from '@mui/material';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
 import { motion } from 'framer-motion';
-import hero from '../assets/hero.png';
+import hero from '../assets/hero.webp';
 import { heroData } from '../data/portfolioData';
 
 const Home = () => {

@@ -1,13 +1,31 @@
-import React, { useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
+import { motion } from 'framer-motion';
 
 const ParticlesComponent = () => {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    // 2. The Smart Trigger Function
+    const triggerParticles = () => setIsReady(true);
+
+    if ('requestIdleCallback' in window) {
+      // Native browser API: Fires exactly when the main thread is completely free
+      requestIdleCallback(triggerParticles);
+    } else {
+      // Safe fallback for older browsers (like old versions of Safari)
+      setTimeout(triggerParticles, 500);
+    }
+  }, []);
+
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
 
   const options = {
+    // Added explicit fullScreen controls to ensure it stays strictly in the background
+    fullScreen: { enable: true, zIndex: -1 }, 
     background: {
       color: {
         value: '#0d0d0d',
@@ -80,7 +98,20 @@ const ParticlesComponent = () => {
     detectRetina: true,
   };
 
-  return <Particles id="tsparticles" init={particlesInit} options={options} />;
+  // 3. Keep the CPU totally clear until the browser is idle
+  if (!isReady) return null; 
+
+  // 4. The Cinematic Fade
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2.5, ease: "easeInOut" }} // Smooth 2.5 second fade
+      style={{ willChange: "opacity" }}
+    >
+      <Particles id="tsparticles" init={particlesInit} options={options} />
+    </motion.div>
+  );
 };
 
 export default ParticlesComponent;
