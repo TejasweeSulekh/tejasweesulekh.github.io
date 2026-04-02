@@ -1,0 +1,1 @@
+import{$ as e,K as t,t as n,tt as r}from"./proxy-CXJ3Iqr4.js";r(e(),1);var i=t(),a=({children:e,delay:t=0,direction:r=`up`})=>{let a=r===`up`?50:r===`down`?-50:0,o=r===`left`?50:r===`right`?-50:0;return(0,i.jsx)(n.div,{initial:{opacity:0,y:a,x:o},whileInView:{opacity:1,y:0,x:0},viewport:{once:!0,amount:.3},transition:{duration:.5,delay:t},children:e})};export{a as t};
