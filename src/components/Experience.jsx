@@ -2,8 +2,6 @@ import React from 'react';
 import { Container, Typography, Box, Card, CardContent, List, ListItem, ListItemText } from '@mui/material';
 import FadeInView from './FadeInView';
 import { experiences } from '../data/portfolioData';
-import { motion } from 'framer-motion';
-
 
 const Experience = () => {
   return (
@@ -11,6 +9,7 @@ const Experience = () => {
       <Typography variant="h4" component="h2" gutterBottom align="center">
         Work Experience
       </Typography>
+      
       {experiences.map((exp, index) => (
         <FadeInView key={index} delay={index * 0.2}>
           <Card sx={{
@@ -34,13 +33,19 @@ const Experience = () => {
               <Typography variant="subtitle2" component="p" color="text.secondary" gutterBottom>
                 {exp.period}
               </Typography>
-              <List dense>
+              
+              <List dense sx={{ mt: 1, listStyleType: 'disc', pl: 2 }}>
                 {exp.points.map((point, i) => (
-                  <ListItem key={i}>
-                    <ListItemText primary={point} />
+                  <ListItem key={i} sx={{ display: 'list-item', px: 0, py: 0.5 }}>
+                    <ListItemText 
+                      primary={point} 
+                      primaryTypographyProps={{ variant: 'body2', color: 'text.secondary' }}
+                      sx={{ m: 0 }} 
+                    />
                   </ListItem>
                 ))}
               </List>
+
             </CardContent>
           </Card>
         </FadeInView>

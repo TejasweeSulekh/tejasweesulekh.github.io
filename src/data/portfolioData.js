@@ -1,7 +1,7 @@
 // src/data/portfolioData.js
 
 export const heroData = {
-  toRotate: ["MLOps & Embedded Systems Engineer", "Architecting intelligent systems from silicon to scale."],
+  toRotate: ["AI & Systems Engineer", "Architecting intelligent systems from silicon to scale."],
   typingSpeed: 150
 };
 
@@ -30,14 +30,14 @@ export const experiences = [
     company: "IPHIPI, Hyderabad",
     period: "July 2025 - Present",
     points: [
-      "Engineered custom asymmetric and multi-resolution loss functions to penalize false positives in low-SNR environments, improving speech quality metric by 10% and noise reduction quality by 13% compared to the baseline.",
-      "Executed end-to-end Edge AI deployments from Python to bare-metal hardware via Data-path and Quantization-Aware Training (QAT), achieving 95% quantization retention and 30% higher speech quality compared to baseline.",
-      "Architected a sub-150ms multi-threaded python inference engine, utilizing a thread-safe producer-consumer queues with 0% deadlock and active health monitoring dashboard for overflow and underflow detection.",
-      "Optimized neural network bottlenecks by replacing standard GRUs with Dilated Convolutional Networks, achieving 1:1 speech power transparency retention and improving temporal context.",
-      "Abstracted data buffering and pre-processing pipelines, decoupling ML architectures from low-level hardware constraints to enable rapid model retraining across diverse Bluetooth chipsets compatibility with the product.",
-      "Prototyped an ultra-low latency (4ms) inference system, utilizing filter coefficients which were dynamically evolving for every 0.5ms (8 samples) driven by real-time neural network masks in a multi-data-path pipeline.",
-      "Developed automated data augmentation pipelines, teaching the model to dynamically handle varying digital gain levels via magnitude independent loss function at natural logarithmic scale.",
-      "Spearheaded technical integrations as the lead liaison between the client and silicon manufacturers, resolving OTA blockers and advancing solutions from technical POC to the commercial pricing stage."
+      "Architected a sub-150ms multi-threaded Python inference engine, utilizing thread-safe producer-consumer queues with 0% deadlock and an active health monitoring dashboard.",
+      "Prototyped an ultra-low latency (4ms) inference system utilizing dynamic filter coefficients evolving every 0.5ms driven by real-time neural network masks.",
+      "Abstracted data buffering and pre-processing pipelines, decoupling ML architectures from low-level hardware constraints to enable rapid model retraining.",
+      "Engineered custom asymmetric and multi-resolution loss functions to penalize false positives in low-SNR environments, improving speech quality metrics by 10%.",
+      "Optimized neural network bottlenecks by replacing standard GRUs with Dilated Convolutional Networks, improving temporal context and achieving 1:1 speech power transparency.",
+      "Developed automated data augmentation pipelines handling varying digital gain levels via a magnitude-independent loss function at a natural logarithmic scale.",
+      "Executed end-to-end Edge AI deployments from Python to bare-metal hardware via Quantization-Aware Training (QAT), achieving 95% quantization retention.",
+      "Spearheaded technical integrations as the lead liaison between the client and silicon manufacturers, resolving OTA blockers to advance POCs to commercial pricing."
     ]
   }
 ];
@@ -45,38 +45,45 @@ export const experiences = [
 export const mainProjects = [
   {
     title: "Explainable Fraud Detection System",
-    subtitle: "Self Project",
+    subtitle: "Event-Driven Microservices Architecture",
     points: [
-      "Built an automated MLflow MLOps pipeline, training a 99.96% accuracy XGBoost classifier for imbalanced datasets.",
       "Created a Kubernetes microservices architecture to process Kafka event streams for real-time inference within 15ms.",
+      "Built an automated MLflow MLOps pipeline, training a 99.96% accuracy XGBoost classifier for imbalanced datasets.",
       "Engineered a ReAct agentic AI workflow via LangGraph, with automated risk reports based on extracted SHAP values.",
-      "Executed a RAG pipeline utilizing LLM embeddings, for historical similarity searches monitored on a live Streamlit."
+      "Executed a RAG pipeline utilizing LLM embeddings for historical similarity searches monitored on a live Streamlit dashboard."
     ],
     githubLink: "https://github.com/TejasweeSulekh/Fraud-Detection-System",
-    // liveLink: "https://your-live-demo.com"
   }
 ];
 
 export const academicProjects = [
   {
-    title: "GPT from Scratch",
-    description: "Engineered a 10M parameter decoder-only transformer from scratch in PyTorch, implementing multi-head self-attention and residual pathways to train a generative model on the Tiny Shakespeare dataset."
-  },
-  {
-    title: "Hierarchical Object Detection",
-    description: "Led a 6-member team to build a multi-label dental X-ray detector using wavelet compression, fine-tuned Co-DETR, and Efficient-Net with Focal loss, increasing accuracy from 72.7% to 78.9%."
-  },
-  {
-    title: "Chest X-Ray Classifier",
-    description: "Trained EfficientNet and ResNet models on a 100k+ image dataset for 14-class disease classification, utilizing Haar wavelets for denoising and decentralized Federated Learning for client-server training."
+    title: "Generative Pre-trained Transformer",
+    points: [
+      "Engineered a 10M parameter decoder-only transformer from scratch in PyTorch.",
+      "Implemented multi-head self-attention and residual pathways to train a generative model on the Tiny Shakespeare dataset."
+    ]
   },
   {
     title: "Algorithmic Trading Predictor",
-    description: "Developed a customizable LSTM network utilizing OHLCV time-series data to forecast short-term stock prices, integrating a simulated trading module for automated long/short strategy execution."
+    points: [
+      "Developed a customizable LSTM network utilizing OHLCV time-series data to forecast short-term stock prices.",
+      "Integrated a simulated trading module for automated long/short strategy execution and risk management."
+    ]
   },
   {
-    title: "Computer Vision Fundamentals",
-    description: "Applied Wavelet transforms, SIFT, and Wiener filtering for image restoration and feature extraction, benchmarking traditional CV algorithms against a custom CNN using OpenCV."
+    title: "Hierarchical Object Detection",
+    points: [
+      "Led a 6-member team to build a multi-label X-ray detector using wavelet compression and fine-tuned Co-DETR.",
+      "Utilized Efficient-Net with Focal loss to increase detection accuracy from 72.7% to 78.9%."
+    ]
+  },
+  {
+    title: "Computer Vision Metrology",
+    points: [
+      "Applied Wavelet transforms, SIFT, and Wiener filtering for image restoration.",
+      "Benchmarked traditional CV anomaly detection algorithms against a custom CNN using OpenCV."
+    ]
   }
 ];
 
