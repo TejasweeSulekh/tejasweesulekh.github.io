@@ -38,8 +38,8 @@ const Experience = () => {
                 {exp.points.map((point, i) => (
                   <ListItem key={i} sx={{ display: 'list-item', px: 0, py: 0.5 }}>
                     <ListItemText 
-                      primary={point} 
-                      primaryTypographyProps={{ variant: 'body2', color: 'text.secondary' }}
+                      primary={point}
+                      primaryTypographyProps={{ variant: 'body2', color: 'text.primary' }}
                       sx={{ m: 0 }} 
                     />
                   </ListItem>
