@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 
 const ParticlesComponent = () => {
   const [isReady, setIsReady] = useState(false);
+  const [particlesEngineLoaded, setParticlesEngineLoaded] = useState(false);
 
   useEffect(() => {
     // 2. The Smart Trigger Function
@@ -14,7 +15,7 @@ const ParticlesComponent = () => {
       // Native browser API: Fires exactly when the main thread is completely free
       requestIdleCallback(triggerParticles);
     } else {
-      // Safe fallback for older browsers (like old versions of Safari)
+      // Safe fallback for older browsers
       setTimeout(triggerParticles, 500);
     }
   }, []);
@@ -23,8 +24,13 @@ const ParticlesComponent = () => {
     await loadSlim(engine);
   }, []);
 
+  // 3. Callback: Fires when the canvas is fully initialized and painted
+  const particlesLoaded = useCallback(async (container) => {
+    setParticlesEngineLoaded(true);
+  }, []);
+
   const options = {
-    // Added explicit fullScreen controls to ensure it stays strictly in the background
+    // Explicit fullScreen controls to ensure it stays strictly in the background
     fullScreen: { enable: true, zIndex: -1 }, 
     background: {
       color: {
@@ -34,30 +40,16 @@ const ParticlesComponent = () => {
     fpsLimit: 60,
     interactivity: {
       events: {
-        onClick: {
-          enable: true,
-          mode: 'push',
-        },
-        onHover: {
-          enable: true,
-          mode: 'repulse',
-        },
+        onClick: { enable: true, mode: 'push' },
+        onHover: { enable: true, mode: 'repulse' },
       },
       modes: {
-        push: {
-          quantity: 1,
-        },
-        repulse: {
-          distance: 40,
-          duration: 0.4,
-          strength: 0.5,
-        },
+        push: { quantity: 1 },
+        repulse: { distance: 40, duration: 0.4, strength: 0.5 },
       },
     },
     particles: {
-      color: {
-        value: '#ffffff',
-      },
+      color: { value: '#ffffff' },
       links: {
         color: '#ffffff',
         distance: 150,
@@ -65,48 +57,38 @@ const ParticlesComponent = () => {
         opacity: 0.5,
         width: 1,
       },
-      collisions: {
-        enable: true,
-      },
+      collisions: { enable: true },
       move: {
         direction: 'none',
         enable: true,
-        outModes: {
-          default: 'bounce',
-        },
+        outModes: { default: 'bounce' },
         random: false,
         speed: 1,
         straight: false,
       },
       number: {
-        density: {
-          enable: true,
-        },
+        density: { enable: true },
         value: 80,
         limit: 120,
       },
-      opacity: {
-        value: 0.5,
-      },
-      shape: {
-        type: 'circle',
-      },
-      size: {
-        value: { min: 1, max: 5 },
-      },
+      opacity: { value: 0.5 },
+      shape: { type: 'circle' },
+      size: { value: { min: 1, max: 5 } },
     },
     detectRetina: true,
   };
 
-  // 3. Keep the CPU totally clear until the browser is idle
+  // Keep the CPU totally clear until the browser is idle
   if (!isReady) return null; 
 
-  // 4. The Cinematic Fade
+  // 4. The Cinematic Fade (Now waits for the engine)
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 2.5, ease: "easeInOut" }}
+      // Wait for the particles to confirm they are loaded before fading to 1
+      animate={{ opacity: particlesEngineLoaded ? 1 : 0 }}
+      // A 0.5s delay to give the main thread a buffer between loading and fading
+      transition={{ duration: 2.5, delay: 0.5, ease: "easeInOut" }}
       style={{ 
         position: 'fixed',
         top: 0, 
@@ -117,7 +99,12 @@ const ParticlesComponent = () => {
         willChange: "opacity" 
       }} 
     >
-      <Particles id="tsparticles" init={particlesInit} options={options} />
+      <Particles 
+        id="tsparticles" 
+        init={particlesInit} 
+        loaded={particlesLoaded} // Hook into the loaded event here
+        options={options} 
+      />
     </motion.div>
   );
 };
