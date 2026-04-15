@@ -56,8 +56,14 @@ const Header = () => {
               textTransform: 'none',
               fontWeight: 'bold',
               boxShadow: '0 4px 14px 0 rgba(244, 143, 177, 0.3)',
-              transition: 'transform 0.2s',
-              '&:hover': { transform: 'scale(1.05)' }
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                backgroundColor: 'transparent',
+                color: '#00e5ff',
+                // Inset border creates an inner ring, standard shadow creates the outer glow
+                boxShadow: 'inset 0 0 0 2px #00e5ff, 0 4px 20px 0 rgba(0, 229, 255, 0.4)',
+              }
             }}
           >
             Blog
