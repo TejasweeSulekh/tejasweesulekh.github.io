@@ -73,7 +73,7 @@ const Contact = () => {
   const handleCloseSnackbar = () => setStatus({ ...status, success: false, error: false });
 
   return (
-    <Container component="section" id="contact" sx={{ py: 8 }}>
+    <Container component="section" id="contact" data-track-visibility="true" sx={{ py: 8 }}>
       <Typography variant="h4" component="h2" gutterBottom align="center">
         Contact Me
       </Typography>
@@ -92,7 +92,13 @@ const Contact = () => {
             <HCaptcha sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" onVerify={onCaptchaChange} ref={captchaRef} />
           </Box>
 
-          <Button variant="contained" type="submit" fullWidth disabled={status.submitting || !canSubmit} sx={{ transition: 'transform 0.2s', '&:hover': { transform: !canSubmit ? 'none' : 'scale(1.02)' } }}>
+          <Button 
+            variant="contained" 
+            type="submit" 
+            fullWidth 
+            disabled={status.submitting || !canSubmit} 
+            data-umami-event="Contact Form Submitted"
+            sx={{ transition: 'transform 0.2s', '&:hover': { transform: !canSubmit ? 'none' : 'scale(1.02)' } }}>
             {!canSubmit ? 'Daily Limit Reached' : status.submitting ? 'Sending...' : 'Send Message'}
           </Button>
         </Box>
@@ -108,6 +114,7 @@ const Contact = () => {
             href="/Tejaswee_Sulekh_Resume.pdf" 
             download="Tejaswee_Sulekh_Resume.pdf"
             startIcon={<DownloadIcon />}
+            data-umami-event="Resume Downloaded"
             sx={{ 
               mt: 1, 
               color: '#fff',

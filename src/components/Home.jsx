@@ -52,7 +52,7 @@ const Home = () => {
   };
 
   return (
-    <Container component="section" id="home" sx={{ textAlign: 'center', py: 8 }}>
+    <Container component="section" id="home" data-track-visibility="true" sx={{ textAlign: 'center', py: 8 }}>
       <motion.div variants={containerVariants} initial="hidden" animate="visible">
         
         {/* The Clean Avatar */}

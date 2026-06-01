@@ -18,7 +18,7 @@ const Skills = () => {
   };
 
   return (
-    <Container component="section" id="skills" sx={{ py: 8 }}>
+    <Container component="section" id="skills" data-track-visibility="true" sx={{ py: 8 }}>
       <Typography variant="h4" component="h2" gutterBottom align="center">
         Skills
       </Typography>

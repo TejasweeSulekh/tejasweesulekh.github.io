@@ -6,7 +6,7 @@ import FadeInView from './FadeInView';
 
 const Projects = () => {
   return (
-    <Container component="section" id="projects" sx={{ py: 8 }}>
+    <Container component="section" id="projects" data-track-visibility="true" sx={{ py: 8 }}>
       <Typography variant="h4" component="h2" gutterBottom align="center">
         Projects
       </Typography>
@@ -44,6 +44,7 @@ const Projects = () => {
                         component="a" 
                         href={project.githubLink} 
                         target="_blank" 
+                        data-umami-event={`Project: ${project.title} (GitHub)`}
                         sx={{ color: 'text.secondary', transition: '0.2s', '&:hover': { color: '#fff', transform: 'scale(1.1)' } }}
                       >
                         <FaGithub />
@@ -57,6 +58,7 @@ const Projects = () => {
                         component="a" 
                         href={project.liveLink} 
                         target="_blank" 
+                        data-umami-event={`Project: ${project.title} (Live Demo)`}
                         sx={{ color: 'text.secondary', transition: '0.2s', '&:hover': { color: 'secondary.main', transform: 'scale(1.1)' } }}
                       >
                         <FaExternalLinkAlt />

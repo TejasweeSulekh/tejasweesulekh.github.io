@@ -4,6 +4,8 @@ import Home from './components/Home';
 import Footer from './components/Footer';
 import ParticlesComponent from './components/ParticlesComponent';
 
+import { useVisibilityTracker } from './hooks/useVisibilityTracker';
+
 // 2. Lazy load the "Below the Fold" components
 const Experience = lazy(() => import('./components/Experience'));
 const Projects = lazy(() => import('./components/Projects'));
@@ -12,6 +14,9 @@ const Skills = lazy(() => import('./components/Skills'));
 const Contact = lazy(() => import('./components/Contact'));
 
 function App() {
+  // Initialize the passive tracker. It will automatically watch the whole app.
+  useVisibilityTracker();
+
   return (
     <>
       <ParticlesComponent />

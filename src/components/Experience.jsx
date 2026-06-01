@@ -5,7 +5,7 @@ import { experiences } from '../data/portfolioData';
 
 const Experience = () => {
   return (
-    <Container component="section" id="experience" sx={{ py: 8 }}>
+    <Container component="section" id="experience" data-track-visibility="true" sx={{ py: 8 }}>
       <Typography variant="h4" component="h2" gutterBottom align="center">
         Work Experience
       </Typography>

@@ -51,6 +51,7 @@ const Header = () => {
             target="_blank"
             size="small"
             startIcon={<CreateIcon />}
+            data-umami-event="Header: Navigated to Blog"
             sx={{
               borderRadius: '20px',
               textTransform: 'none',

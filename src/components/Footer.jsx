@@ -15,6 +15,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             color="inherit"
+            data-umami-event="Footer: GitHub Click"
           >
             <FaGithub />
           </IconButton>
@@ -25,6 +26,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             color="inherit"
+            data-umami-event="Footer: LinkedIn Click"
           >
             <FaLinkedin />
           </IconButton>
@@ -33,6 +35,7 @@ const Footer = () => {
             component={Link}
             href="mailto:t.sulekh312@gmail.com"
             color="inherit"
+            data-umami-event="Footer: Email Click"
           >
             <FaEnvelope />
           </IconButton>
