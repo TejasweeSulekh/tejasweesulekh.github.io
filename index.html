@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tejaswee Sulekh</title>
-    <script type="module" crossorigin src="/assets/index-CwRoJPD0.js"></script>
+    <script type="module" crossorigin src="/assets/index-DxH_fGcG.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/proxy-CXJ3Iqr4.js">
     <link rel="modulepreload" crossorigin href="/assets/Box-COEUU1_d.js">
     <link rel="modulepreload" crossorigin href="/assets/Grow-C9SyLst4.js">
@@ -37,16 +37,44 @@
 
         script.onload = async () => {
           try {
-            const response = await fetch('https://ipinfo.io/json?token=a15359cc8ba7cc');
-            const data = await response.json();
-            const organization = data.org || 'Unknown Network';
+            // 1. Memory check to save API calls
+            let organization = sessionStorage.getItem('b2b_org');
 
-            if (window.umami) {
-              window.umami.track(props => ({
-                ...props,
-                data: { company: organization }
-              }));
+            if (!organization) {
+              const response = await fetch('https://ipinfo.io/json?token=a15359cc8ba7cc');
+              const data = await response.json();
+              organization = data.org || 'Unknown Network';
+              sessionStorage.setItem('b2b_org', organization);
             }
+
+            // 2. Define the exact tracking payload
+            const fireTrack = () => {
+              if (window.umami) {
+                window.umami.track(props => ({
+                  ...props,
+                  data: { company: organization }
+                }));
+              }
+            };
+
+            // 3. Fire on the initial page load
+            fireTrack();
+
+            // 4. Hijack the History API to listen for React Router navigations
+            const originalPushState = history.pushState;
+            history.pushState = function () {
+              originalPushState.apply(this, arguments);
+              fireTrack(); // Fire tracking again when React pushes a new route
+            };
+
+            const originalReplaceState = history.replaceState;
+            history.replaceState = function () {
+              originalReplaceState.apply(this, arguments);
+              fireTrack();
+            };
+
+            window.addEventListener('popstate', fireTrack); // Catch browser back/forward buttons
+            
           } catch (error) {
             if (window.umami) { window.umami.track(); }
           }
