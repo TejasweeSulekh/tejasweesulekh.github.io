@@ -53,6 +53,17 @@ export const mainProjects = [
       "Executed a RAG pipeline utilizing LLM embeddings for historical similarity searches monitored on a live Streamlit dashboard."
     ],
     githubLink: "https://github.com/TejasweeSulekh/Fraud-Detection-System",
+  },
+
+  {
+    title: "Project Odysseus: Agentic Orchestration Engine",
+    subtitle: "",
+    points: [
+      "Engineered a bifurcated agentic orchestration engine, combining a synchronous ReAct loop and Kanban queue",
+      "Architected a secure Model Context Protocol microservice via FastAPI for decoupled and scalable tool excecution",
+      "Integrated a ChromaDB vector memory pipeline, live LLM telemetry, and hybrid-cloud Google GenAI fallback"
+    ],
+    githubLink: "https://github.com/TejasweeSulekh/Project-Argus",
   }
 ];
 
