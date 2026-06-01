@@ -63,7 +63,7 @@ export const mainProjects = [
       "Architected a secure Model Context Protocol microservice via FastAPI for decoupled and scalable tool excecution",
       "Integrated a ChromaDB vector memory pipeline, live LLM telemetry, and hybrid-cloud Google GenAI fallback"
     ],
-    githubLink: "https://github.com/TejasweeSulekh/Project-Argus",
+    githubLink: "https://github.com/TejasweeSulekh/Odysseus-Agent",
   }
 ];
 
