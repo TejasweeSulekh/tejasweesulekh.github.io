@@ -6,43 +6,37 @@ const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export const useColorMode = () => useContext(ColorModeContext);
 
-/**
- * REFINED DESIGNER SCHEMES
- * Focus: High contrast for Dark Mode, Depth-rich Light Mode.
- */
 const schemes = {
-  // Option: SlateMint (Minted Light Mode)
   slateMint: {
     dark: {
-      primary: '#2dd4bf',    // Vibrant Mint
+      primary: '#2dd4bf',
       secondary: '#5eead4',
-      background: '#020617', // Midnight Slate
-      paper: '#0f172a',      // Slate-900
+      background: '#020617',
+      paper: '#0f172a',
       text: '#f1f5f9',
     },
     light: {
-      primary: '#0d9488',    // Dark Teal
+      primary: '#0d9488',
       secondary: '#14b8a6',
-      background: '#fcfaf7', // Back to the warmer Parchment White
+      background: '#fcfaf7',
       paper: '#ffffff',
-      text: '#042f2e',       // Deep Teal-Black for contrast
+      text: '#042f2e',
     }
   },
-  // Option: ObsidianGold (True Black Luxury)
   obsidianGold: {
     dark: {
-      primary: '#fbbf24',    // Amber Gold
+      primary: '#fbbf24',
       secondary: '#f59e0b',
-      background: '#0a0a0a', // True Obsidian Black
-      paper: '#141414',      // Elevated surface
+      background: '#0a0a0a',
+      paper: '#141414',
       text: '#fffbeb',
     },
     light: {
-      primary: '#92400e',    // Deep Bronze-Gold
+      primary: '#92400e',
       secondary: '#b45309',
-      background: '#fdf8ec', // Warm Champagne Cream
+      background: '#fdf8ec',
       paper: '#ffffff',
-      text: '#451a03',       // Deep Brown-Black
+      text: '#451a03',
     }
   }
 };
@@ -83,10 +77,11 @@ export const ColorModeProvider = ({ children }) => {
           mode,
           primary: {
             main: ACTIVE_SCHEME[mode].primary,
-            contrastText: mode === 'dark' ? '#000' : '#fff',
+            contrastText: mode === 'dark' ? '#000000' : '#ffffff',
           },
           secondary: {
             main: ACTIVE_SCHEME[mode].secondary,
+            contrastText: mode === 'dark' ? '#000000' : '#ffffff',
           },
           background: {
             default: ACTIVE_SCHEME[mode].background,
@@ -99,11 +94,6 @@ export const ColorModeProvider = ({ children }) => {
         },
         typography: {
           fontFamily: '"Inter", "system-ui", "-apple-system", sans-serif',
-          h1: { fontWeight: 800, letterSpacing: '-0.025em' },
-          h2: { fontWeight: 700, letterSpacing: '-0.02em' },
-          h3: { fontWeight: 700 },
-          h4: { fontWeight: 600 },
-          button: { textTransform: 'none', fontWeight: 600 },
         },
         shape: {
           borderRadius: 12,
@@ -112,18 +102,7 @@ export const ColorModeProvider = ({ children }) => {
           MuiCssBaseline: {
             styleOverrides: {
               body: {
-                transition: 'background-color 0.4s ease, color 0.4s ease',
-                '&::-webkit-scrollbar': {
-                  width: '8px',
-                },
-                '&::-webkit-scrollbar-track': {
-                  background: ACTIVE_SCHEME[mode].background,
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  background: mode === 'dark' ? '#334155' : '#cbd5e1',
-                  borderRadius: '10px',
-                },
-                // Re-adding the mesh gradient subtle depth
+                transition: 'background-color 0.4s ease',
                 backgroundImage: mode === 'dark' 
                   ? `radial-gradient(at 0% 0%, ${ACTIVE_SCHEME.dark.primary}10 0, transparent 50%), radial-gradient(at 100% 100%, ${ACTIVE_SCHEME.dark.secondary}10 0, transparent 50%)`
                   : `radial-gradient(at 0% 0%, ${ACTIVE_SCHEME.light.primary}05 0, transparent 50%), radial-gradient(at 100% 100%, ${ACTIVE_SCHEME.light.secondary}05 0, transparent 50%)`,
@@ -142,34 +121,21 @@ export const ColorModeProvider = ({ children }) => {
               },
             },
           },
-          MuiIconButton: {
-            styleOverrides: {
-              root: {
-                color: ACTIVE_SCHEME[mode].text,
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                  transform: 'rotate(15deg)',
-                }
-              }
-            }
-          },
           MuiCard: {
             styleOverrides: {
               root: {
                 borderRadius: 24,
                 backgroundImage: 'none',
-                // RESTORING previous opacity/background (not too transparent)
-                backgroundColor: mode === 'dark' 
-                  ? `${ACTIVE_SCHEME[mode].paper}` 
-                  : '#ffffff',
-                border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'}`,
+                backgroundColor: mode === 'dark' ? 'rgba(15, 23, 42, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(12px)',
+                border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`,
                 transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
                 '&:hover': {
                   transform: 'translateY(-12px)',
                   boxShadow: mode === 'dark' 
-                    ? `0 30px 60px -15px rgba(0,0,0,0.8), 0 0 20px -5px ${ACTIVE_SCHEME[mode].primary}44` 
-                    : `0 30px 60px -15px rgba(0,0,0,0.1), 0 0 15px -5px ${ACTIVE_SCHEME[mode].primary}22`,
-                  borderColor: `${ACTIVE_SCHEME[mode].primary}88`,
+                    ? `0 30px 60px -15px rgba(0,0,0,0.7), 0 0 20px -5px ${ACTIVE_SCHEME[mode].primary}33` 
+                    : `0 30px 60px -15px rgba(0,0,0,0.15), 0 0 15px -5px ${ACTIVE_SCHEME[mode].primary}22`,
+                  borderColor: `${ACTIVE_SCHEME[mode].primary}99`,
                 },
               },
             },
@@ -186,6 +152,18 @@ export const ColorModeProvider = ({ children }) => {
               },
             },
           },
+          MuiOutlinedInput: {
+            styleOverrides: {
+              root: {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.23)' : 'rgba(0, 0, 0, 0.23)',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: ACTIVE_SCHEME[mode].primary,
+                },
+              }
+            }
+          }
         },
       }),
     [mode],

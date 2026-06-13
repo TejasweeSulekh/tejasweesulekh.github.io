@@ -115,21 +115,20 @@ const Contact = () => {
             download="Tejaswee_Sulekh_Resume.pdf"
             startIcon={<DownloadIcon />}
             data-umami-event="Resume Downloaded"
-            sx={{ 
-              mt: 1, 
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.3)', 
-              borderRadius: '30px', 
+            sx={{
+              mt: 1,
+              borderRadius: '30px',
               padding: '10px 28px',
-              textTransform: 'none', 
+              textTransform: 'none',
               fontSize: '1.1rem',
-              backdropFilter: 'blur(10px)', 
+              backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease-in-out',
+              // Let the theme handle the colors for outlined buttons
               '&:hover': {
                 borderColor: 'primary.main',
-                boxShadow: '0 0 20px rgba(144, 202, 249, 0.4)', 
+                boxShadow: (theme) => `0 0 20px ${theme.palette.primary.main}66`,
                 transform: 'translateY(-3px)',
-                backgroundColor: 'rgba(144, 202, 249, 0.05)' 
+                backgroundColor: (theme) => `${theme.palette.primary.main}1a`,
               }
             }}
           >
