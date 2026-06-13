@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 import { motion } from 'framer-motion';
+import { useTheme } from '@mui/material';
 
 const ParticlesComponent = () => {
+  const theme = useTheme();
   const [isReady, setIsReady] = useState(false);
   const [particlesEngineLoaded, setParticlesEngineLoaded] = useState(false);
 
@@ -34,7 +36,7 @@ const ParticlesComponent = () => {
     fullScreen: { enable: true, zIndex: -1 }, 
     background: {
       color: {
-        value: '#0d0d0d',
+        value: theme.palette.background.default,
       },
     },
     fpsLimit: 60,
@@ -49,12 +51,12 @@ const ParticlesComponent = () => {
       },
     },
     particles: {
-      color: { value: '#ffffff' },
+      color: { value: theme.palette.text.secondary },
       links: {
-        color: '#ffffff',
+        color: theme.palette.text.secondary,
         distance: 150,
         enable: true,
-        opacity: 0.5,
+        opacity: theme.palette.mode === 'dark' ? 0.3 : 0.1,
         width: 1,
       },
       collisions: { enable: true },
@@ -63,7 +65,7 @@ const ParticlesComponent = () => {
         enable: true,
         outModes: { default: 'bounce' },
         random: false,
-        speed: 1,
+        speed: 0.8,
         straight: false,
       },
       number: {
@@ -71,9 +73,9 @@ const ParticlesComponent = () => {
         value: 80,
         limit: 120,
       },
-      opacity: { value: 0.5 },
+      opacity: { value: theme.palette.mode === 'dark' ? 0.4 : 0.15 },
       shape: { type: 'circle' },
-      size: { value: { min: 1, max: 5 } },
+      size: { value: { min: 1, max: 3 } },
     },
     detectRetina: true,
   };

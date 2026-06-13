@@ -25,7 +25,7 @@ function App() {
         <main>
           <Home />
           {/* 3. Wrap lazy components in Suspense with a fallback */}
-          <Suspense fallback={<div style={{ height: '100vh', backgroundColor: '#0d0d0d' }} />}>
+          <Suspense fallback={<div style={{ height: '100vh', backgroundColor: 'transparent' }} />}>
             <Experience />
             <Projects />
             <Achievements />
