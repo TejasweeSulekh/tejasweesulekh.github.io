@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import FadeInView from './FadeInView';
 import Section from './Section';
 import { skills } from '../data/portfolioData';
+import { useCustomTheme } from '../theme';
 
 const Skills = () => {
+  const { retroMode } = useCustomTheme();
+  
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -30,7 +33,21 @@ const Skills = () => {
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
                     {list.map((skill) => (
-                      <Chip key={skill} label={skill} />
+                      <Chip 
+                        key={skill} 
+                        label={skill} 
+                        sx={retroMode ? {
+                          borderRadius: 0,
+                          border: '2px solid',
+                          borderColor: 'primary.main',
+                          backgroundColor: 'transparent',
+                          color: 'text.primary',
+                          fontFamily: '"VT323", monospace',
+                          fontSize: '1.2rem',
+                          textTransform: 'uppercase',
+                          p: 1
+                        } : {}} 
+                      />
                     ))}
                   </Box>
                 </CardContent>

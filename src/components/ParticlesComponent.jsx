@@ -3,9 +3,11 @@ import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 import { motion } from 'framer-motion';
 import { useTheme } from '@mui/material';
+import { useCustomTheme } from '../theme';
 
 const ParticlesComponent = () => {
   const theme = useTheme();
+  const { retroMode } = useCustomTheme();
   const [isReady, setIsReady] = useState(false);
   const [particlesEngineLoaded, setParticlesEngineLoaded] = useState(false);
 
@@ -51,31 +53,31 @@ const ParticlesComponent = () => {
       },
     },
     particles: {
-      color: { value: theme.palette.text.secondary },
+      color: { value: retroMode ? [theme.palette.primary.main, theme.palette.secondary.main, '#ffffff'] : theme.palette.text.secondary },
       links: {
         color: theme.palette.text.secondary,
         distance: 150,
-        enable: true,
+        enable: !retroMode,
         opacity: theme.palette.mode === 'dark' ? 0.3 : 0.1,
         width: 1,
       },
       collisions: { enable: true },
       move: {
-        direction: 'none',
+        direction: retroMode ? 'top' : 'none',
         enable: true,
-        outModes: { default: 'bounce' },
-        random: false,
-        speed: 0.8,
-        straight: false,
+        outModes: { default: 'out' },
+        random: retroMode,
+        speed: retroMode ? 0.5 : 0.8,
+        straight: retroMode,
       },
       number: {
         density: { enable: true },
-        value: 80,
-        limit: 120,
+        value: retroMode ? 100 : 80,
+        limit: retroMode ? 200 : 120,
       },
-      opacity: { value: theme.palette.mode === 'dark' ? 0.4 : 0.15 },
-      shape: { type: 'circle' },
-      size: { value: { min: 1, max: 3 } },
+      opacity: { value: retroMode ? 0.8 : (theme.palette.mode === 'dark' ? 0.4 : 0.15) },
+      shape: { type: retroMode ? 'square' : 'circle' },
+      size: { value: retroMode ? { min: 2, max: 4 } : { min: 1, max: 3 } },
     },
     detectRetina: true,
   };

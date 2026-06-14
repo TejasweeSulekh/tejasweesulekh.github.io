@@ -62,10 +62,10 @@ export const CustomThemeProvider = ({ children }) => {
     if (savedMode) {
       setMode(savedMode);
     } else {
-      setMode(prefersDarkMode ? 'dark' : 'light');
+      setMode('dark');
     }
     setRetroMode(savedRetroMode);
-  }, [prefersDarkMode]);
+  }, []);
 
   const themeController = useMemo(
     () => ({
@@ -147,14 +147,17 @@ export const CustomThemeProvider = ({ children }) => {
                 borderRadius: 24,
                 backgroundImage: 'none',
                 backgroundColor: mode === 'dark' ? 'rgba(15, 23, 42, 0.6)' : 'rgba(255, 255, 255, 0.7)',
-                backdropFilter: 'blur(12px)',
+                backdropFilter: 'blur(16px)',
                 border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`,
+                boxShadow: mode === 'dark' 
+                  ? 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' 
+                  : 'inset 0 1px 0 0 rgba(255, 255, 255, 0.5), 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
                 transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
                 '&:hover': {
-                  transform: 'translateY(-12px)',
+                  transform: 'translateY(-8px)',
                   boxShadow: mode === 'dark' 
-                    ? `0 30px 60px -15px rgba(0,0,0,0.7), 0 0 20px -5px ${ACTIVE_SCHEME[mode].primary}33` 
-                    : `0 30px 60px -15px rgba(0,0,0,0.15), 0 0 15px -5px ${ACTIVE_SCHEME[mode].primary}22`,
+                    ? `inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 20px 40px -10px rgba(0,0,0,0.7), 0 0 20px -5px ${ACTIVE_SCHEME[mode].primary}33` 
+                    : `inset 0 1px 0 0 rgba(255, 255, 255, 0.5), 0 20px 40px -10px rgba(0,0,0,0.15), 0 0 15px -5px ${ACTIVE_SCHEME[mode].primary}22`,
                   borderColor: `${ACTIVE_SCHEME[mode].primary}99`,
                 },
               },
@@ -189,17 +192,17 @@ export const CustomThemeProvider = ({ children }) => {
 
       // 6. IF RETRO MODE IS ON, AUGMENT THE THEME
       if (retroMode) {
-        baseTheme.typography.h1 = { fontFamily: '"VT323", monospace', textShadow: mode === 'dark' ? '0 0 8px rgba(45, 212, 191, 0.5)' : 'none' };
-        baseTheme.typography.h2 = { fontFamily: '"VT323", monospace' };
-        baseTheme.typography.h3 = { fontFamily: '"VT323", monospace' };
-        baseTheme.typography.h4 = { fontFamily: '"VT323", monospace' };
-        baseTheme.typography.h5 = { fontFamily: '"VT323", monospace' };
-        baseTheme.typography.h6 = { fontFamily: '"VT323", monospace' };
-        baseTheme.typography.subtitle1 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
-        baseTheme.typography.subtitle2 = { fontFamily: '"VT323", monospace', fontSize: '1rem' };
-        baseTheme.typography.body1 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
-        baseTheme.typography.body2 = { fontFamily: '"VT323", monospace', fontSize: '1rem' };
-        baseTheme.typography.button = { fontFamily: '"VT323", monospace', fontSize: '1.1rem', letterSpacing: '1px' };
+        baseTheme.typography.h1 = { fontFamily: '"Sixtyfour", "VT323", monospace', textShadow: mode === 'dark' ? `0 0 8px ${ACTIVE_SCHEME[mode].primary}88` : `2px 2px 0px ${ACTIVE_SCHEME[mode].primary}88` };
+        baseTheme.typography.h2 = { fontFamily: '"Sixtyfour", "VT323", monospace' };
+        baseTheme.typography.h3 = { fontFamily: '"Sixtyfour", "VT323", monospace' };
+        baseTheme.typography.h4 = { fontFamily: '"Sixtyfour", "VT323", monospace' };
+        baseTheme.typography.h5 = { fontFamily: '"Sixtyfour", "VT323", monospace' };
+        baseTheme.typography.h6 = { fontFamily: '"Sixtyfour", "VT323", monospace' };
+        baseTheme.typography.subtitle1 = { fontFamily: '"VT323", monospace', fontSize: '1.2rem' };
+        baseTheme.typography.subtitle2 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
+        baseTheme.typography.body1 = { fontFamily: '"VT323", monospace', fontSize: '1.2rem' };
+        baseTheme.typography.body2 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
+        baseTheme.typography.button = { fontFamily: '"VT323", monospace', fontSize: '1.2rem', letterSpacing: '2px' };
         
         baseTheme.shape.borderRadius = 0; // Square corners for retro look
         
@@ -209,6 +212,18 @@ export const CustomThemeProvider = ({ children }) => {
               ...baseTheme.components.MuiCssBaseline.styleOverrides.body,
               position: 'relative',
               overflowX: 'hidden',
+              '&::after': {
+                content: '""',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%)',
+                backgroundSize: '100% 4px',
+                pointerEvents: 'none',
+                zIndex: 9999,
+              }
             }
           }
         };
@@ -216,12 +231,13 @@ export const CustomThemeProvider = ({ children }) => {
         baseTheme.components.MuiCard.styleOverrides.root = {
           ...baseTheme.components.MuiCard.styleOverrides.root,
           borderRadius: 0,
-          boxShadow: mode === 'dark' ? '4px 4px 0px #334155' : '4px 4px 0px #ccc',
-          border: `2px solid ${ACTIVE_SCHEME[mode].primary}`,
+          backdropFilter: 'none',
+          boxShadow: mode === 'dark' ? '6px 6px 0px rgba(255,255,255,0.1)' : '6px 6px 0px rgba(0,0,0,0.8)',
+          border: `2px solid ${mode === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'}`,
           backgroundColor: mode === 'dark' ? '#0a0a0a' : '#f5f5f5',
           '&:hover': {
             transform: 'translate(-2px, -2px)',
-            boxShadow: mode === 'dark' ? '6px 6px 0px #334155' : '6px 6px 0px #ccc',
+            boxShadow: `8px 8px 0px ${ACTIVE_SCHEME[mode].primary}`,
             borderColor: ACTIVE_SCHEME[mode].primary,
           }
         };
@@ -231,9 +247,9 @@ export const CustomThemeProvider = ({ children }) => {
           borderRadius: 0,
           border: `2px solid transparent`,
           '&:hover': {
-            transform: 'none',
+            transform: 'translate(-2px, -2px)',
             border: `2px solid ${ACTIVE_SCHEME[mode].primary}`,
-            boxShadow: `4px 4px 0px ${mode === 'dark' ? '#334155' : '#ccc'}`,
+            boxShadow: `6px 6px 0px ${mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.8)'}`,
           },
         };
       }

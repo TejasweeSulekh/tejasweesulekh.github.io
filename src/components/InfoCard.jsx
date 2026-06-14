@@ -2,11 +2,23 @@ import React from 'react';
 import { Card, CardContent, List, ListItem, ListItemText, Typography, Box, IconButton, Tooltip } from '@mui/material';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import FadeInView from './FadeInView';
+import { useCustomTheme } from '../theme';
 
 const InfoCard = ({ title, subtitle, period, points, links, delay = 0 }) => {
+  const { retroMode } = useCustomTheme();
   return (
     <FadeInView delay={delay}>
-      <Card sx={{ mb: 4 }}>
+      <Card sx={{ mb: 4, position: 'relative' }}>
+        {retroMode && (
+          <Box sx={{ borderBottom: '2px solid', borderColor: 'primary.main', p: 1, display: 'flex', alignItems: 'center', gap: 1, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+            <Box sx={{ width: 12, height: 12, backgroundColor: '#ff5f56' }} />
+            <Box sx={{ width: 12, height: 12, backgroundColor: '#ffbd2e' }} />
+            <Box sx={{ width: 12, height: 12, backgroundColor: '#27c93f' }} />
+            <Typography sx={{ ml: 2, fontFamily: '"VT323", monospace', color: 'text.secondary', fontSize: '1rem', textTransform: 'lowercase' }}>
+              ~/system/exec
+            </Typography>
+          </Box>
+        )}
         <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
             <Box>
@@ -58,12 +70,12 @@ const InfoCard = ({ title, subtitle, period, points, links, delay = 0 }) => {
           </Box>
 
           {points && (
-            <List dense sx={{ mt: 1, listStyleType: 'disc', pl: 2 }}>
+            <List dense sx={{ mt: 1, listStyleType: retroMode ? 'none' : 'disc', pl: retroMode ? 0 : 2 }}>
               {points.map((point, i) => (
                 <ListItem key={i} sx={{ display: 'list-item', px: 0, py: 0.5 }}>
                   <ListItemText 
-                    primary={point} 
-                    primaryTypographyProps={{ variant: 'body2', color: 'text.primary' }}
+                    primary={retroMode ? `> ${point}` : point} 
+                    primaryTypographyProps={{ variant: 'body2', color: retroMode ? 'primary.main' : 'text.primary' }}
                     sx={{ m: 0 }} 
                   />
                 </ListItem>
