@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Menu, MenuItem, useTheme } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, IconButton, Menu, MenuItem, useTheme, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CreateIcon from '@mui/icons-material/Create';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useColorMode } from '../theme';
+import AutoAwesome from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlined from '@mui/icons-material/AutoAwesomeOutlined';
+import { useCustomTheme } from '../theme';
 
 const Header = () => {
   const theme = useTheme();
-  const colorMode = useColorMode();
+  const themeController = useCustomTheme();
   const navItems = ['Home', 'Experience', 'Projects', 'Achievements', 'Skills', 'Contact'];
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -49,9 +51,17 @@ const Header = () => {
             ))}
           </Box>
 
-          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
+          <Tooltip title="Toggle Retro Mode">
+            <IconButton sx={{ ml: 1 }} onClick={themeController.toggleRetroMode} color="inherit">
+              {themeController.retroMode ? <AutoAwesome /> : <AutoAwesomeOutlined />}
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Toggle Dark/Light Mode">
+            <IconButton sx={{ ml: 1 }} onClick={themeController.toggleColorMode} color="inherit">
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Tooltip>
 
           <Button
             variant="contained"

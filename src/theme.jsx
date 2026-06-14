@@ -2,9 +2,14 @@ import React, { createContext, useContext, useMemo, useState, useEffect } from '
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const ColorModeContext = createContext({ toggleColorMode: () => {} });
+// 1. RENAME THE CONTEXT AND HOOK
+const CustomThemeContext = createContext({ 
+  toggleColorMode: () => {},
+  toggleRetroMode: () => {},
+  retroMode: false,
+});
 
-export const useColorMode = () => useContext(ColorModeContext);
+export const useCustomTheme = () => useContext(CustomThemeContext);
 
 const schemes = {
   slateMint: {
@@ -44,20 +49,25 @@ const schemes = {
 const ACTIVE_SCHEME_NAME = 'slateMint'; 
 const ACTIVE_SCHEME = schemes[ACTIVE_SCHEME_NAME];
 
-export const ColorModeProvider = ({ children }) => {
+// 2. RENAME THE PROVIDER
+export const CustomThemeProvider = ({ children }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState('dark');
+  const [retroMode, setRetroMode] = useState(false); // 3. ADD NEW RETRO MODE STATE
 
   useEffect(() => {
     const savedMode = localStorage.getItem('themeMode');
+    const savedRetroMode = localStorage.getItem('retroMode') === 'true';
+    
     if (savedMode) {
       setMode(savedMode);
     } else {
       setMode(prefersDarkMode ? 'dark' : 'light');
     }
+    setRetroMode(savedRetroMode);
   }, [prefersDarkMode]);
 
-  const colorMode = useMemo(
+  const themeController = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => {
@@ -66,13 +76,23 @@ export const ColorModeProvider = ({ children }) => {
           return newMode;
         });
       },
+      // 4. ADD RETRO MODE TOGGLE FUNCTION
+      toggleRetroMode: () => {
+        setRetroMode((prevRetro) => {
+          const newRetro = !prevRetro;
+          localStorage.setItem('retroMode', newRetro);
+          return newRetro;
+        });
+      },
+      retroMode, // Expose retroMode state
     }),
-    [],
+    [retroMode], // Add retroMode to dependency array
   );
 
   const theme = useMemo(
-    () =>
-      createTheme({
+    () => {
+      // 5. GET THE BASE THEME DEFINITION
+      const baseTheme = {
         palette: {
           mode,
           primary: {
@@ -165,15 +185,38 @@ export const ColorModeProvider = ({ children }) => {
             }
           }
         },
-      }),
-    [mode],
+      };
+
+      // 6. IF RETRO MODE IS ON, AUGMENT THE THEME
+      if (retroMode) {
+        baseTheme.typography.h4 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.h5 = { fontFamily: '"VT323", monospace' };
+        baseTheme.shape.borderRadius = 8; // Less curved
+        
+        baseTheme.components.MuiCard.styleOverrides.root = {
+          ...baseTheme.components.MuiCard.styleOverrides.root,
+          borderRadius: baseTheme.shape.borderRadius,
+          boxShadow: 'none',
+          border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
+          '&:hover': {
+            transform: 'none',
+            borderColor: ACTIVE_SCHEME[mode].primary,
+            boxShadow: 'none',
+          }
+        };
+        baseTheme.components.MuiButton.styleOverrides.root.borderRadius = baseTheme.shape.borderRadius;
+      }
+      
+      return createTheme(baseTheme);
+    },
+    [mode, retroMode], // Add retroMode to dependency array
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <CustomThemeContext.Provider value={themeController}>
       <ThemeProvider theme={theme}>
         {children}
       </ThemeProvider>
-    </ColorModeContext.Provider>
+    </CustomThemeContext.Provider>
   );
 };
