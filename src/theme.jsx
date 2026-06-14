@@ -47,7 +47,7 @@ const schemes = {
 };
 
 const ACTIVE_SCHEME_NAME = 'slateMint'; 
-const ACTIVE_SCHEME = schemes[ACTIVE_SCHEME_NAME];
+// Scheme will be resolved dynamically inside the theme provider now
 
 // 2. RENAME THE PROVIDER
 export const CustomThemeProvider = ({ children }) => {
@@ -91,6 +91,17 @@ export const CustomThemeProvider = ({ children }) => {
 
   const theme = useMemo(
     () => {
+      // --- RETRO COLOR SWITCHER ---
+      // To test different colors in Retro Mode, change the string below
+      // Options: 'slateMint' (default), 'obsidianGold'
+      let currentSchemeName = ACTIVE_SCHEME_NAME;
+      if (retroMode) {
+        // You can switch this to 'obsidianGold' to see the difference, 
+        // but keeping it as ACTIVE_SCHEME_NAME complements your existing colors!
+        currentSchemeName = ACTIVE_SCHEME_NAME; 
+      }
+      const ACTIVE_SCHEME = schemes[currentSchemeName];
+
       // 5. GET THE BASE THEME DEFINITION
       const baseTheme = {
         palette: {
@@ -212,17 +223,9 @@ export const CustomThemeProvider = ({ children }) => {
               ...baseTheme.components.MuiCssBaseline.styleOverrides.body,
               position: 'relative',
               overflowX: 'hidden',
-              '&::after': {
-                content: '""',
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100vw',
-                height: '100vh',
-                background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%)',
-                backgroundSize: '100% 4px',
-                pointerEvents: 'none',
-                zIndex: 9999,
+              cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\'%3E%3Cpath fill=\'%23FFF\' stroke=\'%23000\' stroke-width=\'2\' d=\'M5 5v14l4-4 3 7 2-1-3-7 5 0z\'/%3E%3C/svg%3E"), auto',
+              '& a, & button, & [role="button"]': {
+                cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\'%3E%3Cpath fill=\'%230f0\' stroke=\'%23000\' stroke-width=\'2\' d=\'M5 5v14l4-4 3 7 2-1-3-7 5 0z\'/%3E%3C/svg%3E"), pointer !important',
               }
             }
           }

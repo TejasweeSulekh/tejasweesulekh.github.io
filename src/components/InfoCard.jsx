@@ -9,16 +9,6 @@ const InfoCard = ({ title, subtitle, period, points, links, delay = 0 }) => {
   return (
     <FadeInView delay={delay}>
       <Card sx={{ mb: 4, position: 'relative' }}>
-        {retroMode && (
-          <Box sx={{ borderBottom: '2px solid', borderColor: 'primary.main', p: 1, display: 'flex', alignItems: 'center', gap: 1, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-            <Box sx={{ width: 12, height: 12, backgroundColor: '#ff5f56' }} />
-            <Box sx={{ width: 12, height: 12, backgroundColor: '#ffbd2e' }} />
-            <Box sx={{ width: 12, height: 12, backgroundColor: '#27c93f' }} />
-            <Typography sx={{ ml: 2, fontFamily: '"VT323", monospace', color: 'text.secondary', fontSize: '1rem', textTransform: 'lowercase' }}>
-              ~/system/exec
-            </Typography>
-          </Box>
-        )}
         <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
             <Box>
