@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Typography, Box, TextField, Button, Snackbar, Alert } from '@mui/material';
+import { Container, Typography, Box, TextField, Button, Snackbar, Alert, Card, CardContent } from '@mui/material';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import DownloadIcon from '@mui/icons-material/Download';
 import FadeInView from './FadeInView';
@@ -79,29 +79,31 @@ const Contact = () => {
       </Typography>
       
       <FadeInView delay={0.2}>
-        <Box 
+        <Card
           component="form" 
           onSubmit={handleSubmit}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '600px', mx: 'auto', p: 3, borderRadius: 2, boxShadow: '0 4px 20px 0 rgba(0,0,0,0.1)' }}
+          sx={{ maxWidth: '600px', mx: 'auto', p: 1, '&:hover': { transform: 'none' } }}
         >
-          <TextField label="Your Name" name="name" value={formData.name} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
-          <TextField label="Your Email" name="email" type="email" value={formData.email} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
-          <TextField label="Your Message" name="message" value={formData.message} onChange={handleChange} variant="outlined" multiline rows={4} required disabled={status.submitting || !canSubmit} />
-          
-          <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
-            <HCaptcha sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" onVerify={onCaptchaChange} ref={captchaRef} />
-          </Box>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField label="Your Name" name="name" value={formData.name} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
+            <TextField label="Your Email" name="email" type="email" value={formData.email} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
+            <TextField label="Your Message" name="message" value={formData.message} onChange={handleChange} variant="outlined" multiline rows={4} required disabled={status.submitting || !canSubmit} />
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
+              <HCaptcha sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" onVerify={onCaptchaChange} ref={captchaRef} />
+            </Box>
 
-          <Button 
-            variant="contained" 
-            type="submit" 
-            fullWidth 
-            disabled={status.submitting || !canSubmit} 
-            data-umami-event="Contact Form Submitted"
-            sx={{ transition: 'transform 0.2s', '&:hover': { transform: !canSubmit ? 'none' : 'scale(1.02)' } }}>
-            {!canSubmit ? 'Daily Limit Reached' : status.submitting ? 'Sending...' : 'Send Message'}
-          </Button>
-        </Box>
+            <Button 
+              variant="contained" 
+              type="submit" 
+              fullWidth 
+              disabled={status.submitting || !canSubmit} 
+              data-umami-event="Contact Form Submitted"
+              sx={{ transition: 'transform 0.2s', '&:hover': { transform: !canSubmit ? 'none' : 'scale(1.02)' } }}>
+              {!canSubmit ? 'Daily Limit Reached' : status.submitting ? 'Sending...' : 'Send Message'}
+            </Button>
+          </CardContent>
+        </Card>
       </FadeInView>
 
       <FadeInView delay={0.4}>
