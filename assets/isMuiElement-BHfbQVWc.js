@@ -1,1 +1,0 @@
-import{et as e,nt as t}from"./proxy-CVasctg9.js";var n=t(e());function r(e,t){return n.isValidElement(e)&&t.indexOf(e.type.muiName??e.type?._payload?.value?.muiName)!==-1}export{r as t};
