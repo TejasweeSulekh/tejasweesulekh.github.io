@@ -4,8 +4,10 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import DownloadIcon from '@mui/icons-material/Download';
 import FadeInView from './FadeInView';
 import Section from './Section';
+import { useCustomTheme } from '../theme';
 
 const Contact = () => {
+  const { retroMode } = useCustomTheme();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState({ submitting: false, success: false, error: false, message: '' });
   const [canSubmit, setCanSubmit] = useState(true);
@@ -104,19 +106,36 @@ const Contact = () => {
       </FadeInView>
 
       <FadeInView delay={0.4}>
-        <Box sx={{ mt: 6, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+        <Box 
+          sx={{ 
+            mt: 6, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            textAlign: 'center',
+            p: retroMode ? 4 : 0,
+            border: retroMode ? (theme) => `2px dashed ${theme.palette.primary.main}` : 'none',
+            backgroundColor: retroMode ? (theme) => `${theme.palette.primary.main}08` : 'transparent',
+            position: 'relative'
+          }}
+        >
+          <Typography 
+            variant="h6" 
+            color="text.secondary" 
+            gutterBottom
+            sx={{ fontFamily: retroMode ? '"VT323", monospace' : 'inherit' }}
+          >
             Prefer to just grab my resume?
           </Typography>
           <Button 
-            variant="outlined" 
+            variant={retroMode ? "contained" : "outlined"}
             href="/Tejaswee_Sulekh_Resume.pdf" 
             download="Tejaswee_Sulekh_Resume.pdf"
             startIcon={<DownloadIcon />}
             data-umami-event="Resume Downloaded"
             sx={{
               mt: 1,
-              borderRadius: '30px',
+              borderRadius: retroMode ? 0 : '30px',
               padding: '10px 28px',
               textTransform: 'none',
               fontSize: '1.1rem',
@@ -125,9 +144,9 @@ const Contact = () => {
               // Let the theme handle the colors for outlined buttons
               '&:hover': {
                 borderColor: 'primary.main',
-                boxShadow: (theme) => `0 0 20px ${theme.palette.primary.main}66`,
-                transform: 'translateY(-3px)',
-                backgroundColor: (theme) => `${theme.palette.primary.main}1a`,
+                boxShadow: (theme) => retroMode ? `4px 4px 0px ${theme.palette.primary.main}` : `0 0 20px ${theme.palette.primary.main}66`,
+                transform: retroMode ? 'none' : 'translateY(-3px)',
+                backgroundColor: (theme) => retroMode ? 'primary.main' : `${theme.palette.primary.main}1a`,
               }
             }}
           >

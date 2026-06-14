@@ -39,8 +39,20 @@ const Header = () => {
             </Menu>
           </Box>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: { xs: 1, md: 0 }, fontWeight: 'bold', color: 'primary.main' }}>
-            Tejaswee Sulekh
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              ml: { xs: 1, md: 0 }, 
+              fontWeight: 'bold', 
+              color: 'primary.main',
+              fontFamily: themeController.retroMode ? '"VT323", monospace' : 'inherit',
+              fontSize: themeController.retroMode ? '1.5rem' : 'inherit',
+              letterSpacing: themeController.retroMode ? '1px' : 'normal'
+            }}
+          >
+            {themeController.retroMode ? 'Tejaswee Sulekh' : 'Tejaswee Sulekh'}
           </Typography>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>

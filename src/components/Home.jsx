@@ -81,7 +81,19 @@ const Home = () => {
         <motion.div variants={itemVariants}>
           <Typography variant="h5" component="h2" sx={{ mt: 1, minHeight: '3rem' }}>
             <span className="wrap">{text}</span>
+            <span style={{ 
+              borderLeft: '3px solid', 
+              borderColor: 'inherit',
+              marginLeft: '4px',
+              animation: 'blink 1s step-end infinite'
+            }}></span>
           </Typography>
+          <style>{`
+            @keyframes blink {
+              from, to { border-color: transparent }
+              50% { border-color: currentColor }
+            }
+          `}</style>
         </motion.div>
 
       </motion.div>

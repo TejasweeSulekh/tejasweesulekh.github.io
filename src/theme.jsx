@@ -189,22 +189,53 @@ export const CustomThemeProvider = ({ children }) => {
 
       // 6. IF RETRO MODE IS ON, AUGMENT THE THEME
       if (retroMode) {
+        baseTheme.typography.h1 = { fontFamily: '"VT323", monospace', textShadow: mode === 'dark' ? '0 0 8px rgba(45, 212, 191, 0.5)' : 'none' };
+        baseTheme.typography.h2 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.h3 = { fontFamily: '"VT323", monospace' };
         baseTheme.typography.h4 = { fontFamily: '"VT323", monospace' };
         baseTheme.typography.h5 = { fontFamily: '"VT323", monospace' };
-        baseTheme.shape.borderRadius = 8; // Less curved
+        baseTheme.typography.h6 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.subtitle1 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
+        baseTheme.typography.subtitle2 = { fontFamily: '"VT323", monospace', fontSize: '1rem' };
+        baseTheme.typography.body1 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
+        baseTheme.typography.body2 = { fontFamily: '"VT323", monospace', fontSize: '1rem' };
+        baseTheme.typography.button = { fontFamily: '"VT323", monospace', fontSize: '1.1rem', letterSpacing: '1px' };
         
-        baseTheme.components.MuiCard.styleOverrides.root = {
-          ...baseTheme.components.MuiCard.styleOverrides.root,
-          borderRadius: baseTheme.shape.borderRadius,
-          boxShadow: 'none',
-          border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
-          '&:hover': {
-            transform: 'none',
-            borderColor: ACTIVE_SCHEME[mode].primary,
-            boxShadow: 'none',
+        baseTheme.shape.borderRadius = 0; // Square corners for retro look
+        
+        baseTheme.components.MuiCssBaseline = {
+          styleOverrides: {
+            body: {
+              ...baseTheme.components.MuiCssBaseline.styleOverrides.body,
+              position: 'relative',
+              overflowX: 'hidden',
+            }
           }
         };
-        baseTheme.components.MuiButton.styleOverrides.root.borderRadius = baseTheme.shape.borderRadius;
+
+        baseTheme.components.MuiCard.styleOverrides.root = {
+          ...baseTheme.components.MuiCard.styleOverrides.root,
+          borderRadius: 0,
+          boxShadow: mode === 'dark' ? '4px 4px 0px #334155' : '4px 4px 0px #ccc',
+          border: `2px solid ${ACTIVE_SCHEME[mode].primary}`,
+          backgroundColor: mode === 'dark' ? '#0a0a0a' : '#f5f5f5',
+          '&:hover': {
+            transform: 'translate(-2px, -2px)',
+            boxShadow: mode === 'dark' ? '6px 6px 0px #334155' : '6px 6px 0px #ccc',
+            borderColor: ACTIVE_SCHEME[mode].primary,
+          }
+        };
+
+        baseTheme.components.MuiButton.styleOverrides.root = {
+          ...baseTheme.components.MuiButton.styleOverrides.root,
+          borderRadius: 0,
+          border: `2px solid transparent`,
+          '&:hover': {
+            transform: 'none',
+            border: `2px solid ${ACTIVE_SCHEME[mode].primary}`,
+            boxShadow: `4px 4px 0px ${mode === 'dark' ? '#334155' : '#ccc'}`,
+          },
+        };
       }
       
       return createTheme(baseTheme);
