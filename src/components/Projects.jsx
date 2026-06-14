@@ -1,108 +1,42 @@
 import React from 'react';
-import { Container, Typography, Card, CardContent, List, ListItem, ListItemText, Box, IconButton, Tooltip } from '@mui/material';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { Typography } from '@mui/material';
 import { mainProjects, academicProjects } from '../data/portfolioData';
+import Section from './Section';
+import InfoCard from './InfoCard';
 import FadeInView from './FadeInView';
 
 const Projects = () => {
   return (
-    <Container component="section" id="projects" data-track-visibility="true" sx={{ py: 8 }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center">
-        Projects
-      </Typography>
-
+    <Section title="Projects" id="projects">
       {/* MAIN PROJECTS LIST */}
       {mainProjects.map((project, index) => (
-        <FadeInView key={index} delay={index * 0.2}>
-          <Card sx={{ mb: 4 }}>
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                <Box>
-                  <Typography variant="h5" component="h3" color="primary.main">
-                    {project.title}
-                  </Typography>
-                  <Typography variant="subtitle1" component="p" color="text.secondary">
-                    {project.subtitle}
-                  </Typography>
-                </Box>
-                
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  {project.githubLink && (
-                    <Tooltip title="View Source Code" placement="top">
-                      <IconButton 
-                        size="small" 
-                        component="a" 
-                        href={project.githubLink} 
-                        target="_blank" 
-                        data-umami-event={`Project: ${project.title} (GitHub)`}
-                        sx={{ color: 'text.secondary', transition: '0.2s', '&:hover': { color: '#fff', transform: 'scale(1.1)' } }}
-                      >
-                        <FaGithub />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  {project.liveLink && (
-                    <Tooltip title="Live Demo" placement="top">
-                      <IconButton 
-                        size="small" 
-                        component="a" 
-                        href={project.liveLink} 
-                        target="_blank" 
-                        data-umami-event={`Project: ${project.title} (Live Demo)`}
-                        sx={{ color: 'text.secondary', transition: '0.2s', '&:hover': { color: 'secondary.main', transform: 'scale(1.1)' } }}
-                      >
-                        <FaExternalLinkAlt />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Box>
-              </Box>
-
-              <List dense sx={{ mt: 1, listStyleType: 'disc', pl: 2 }}>
-                {project.points.map((point, i) => (
-                  <ListItem key={i} sx={{ display: 'list-item', px: 0, py: 0.5 }}>
-                    <ListItemText 
-                      primary={point} 
-                      primaryTypographyProps={{ variant: 'body2', color: 'text.primary' }}
-                      sx={{ m: 0 }} 
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
-        </FadeInView>
+        <InfoCard
+          key={index}
+          title={project.title}
+          subtitle={project.subtitle}
+          points={project.points}
+          links={{ github: project.githubLink, live: project.liveLink }}
+          delay={(index + 1) * 0.2}
+        />
       ))}
 
-      <Typography variant="h5" component="h3" gutterBottom align="center" sx={{ mt: 6, mb: 4 }}>
-        Academic & Course Projects
-      </Typography>
+      <FadeInView delay={(mainProjects.length + 1) * 0.2}>
+        <Typography variant="h5" component="h3" gutterBottom align="center" sx={{ mt: 6, mb: 4 }}>
+          Academic & Course Projects
+        </Typography>
+      </FadeInView>
       
       {/* ACADEMIC PROJECTS LIST */}
       {academicProjects.map((project, index) => (
-        <FadeInView key={`academic-${index}`} delay={index * 0.2}>
-          <Card sx={{ mb: 4 }}>
-            <CardContent>
-              <Typography variant="h5" component="h3" color="primary.main" sx={{ mb: 1 }}>
-                {project.title}
-              </Typography>
-              
-              <List dense sx={{ mt: 1, listStyleType: 'disc', pl: 2 }}>
-                {project.points.map((point, i) => (
-                  <ListItem key={i} sx={{ display: 'list-item', px: 0, py: 0.5 }}>
-                    <ListItemText 
-                      primary={point} 
-                      primaryTypographyProps={{ variant: 'body2', color: 'text.secondary' }}
-                      sx={{ m: 0 }} 
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
-        </FadeInView>
+        <InfoCard
+          key={`academic-${index}`}
+          title={project.title}
+          points={project.points}
+          links={{ github: project.githubLink, live: project.liveLink }}
+          delay={(index + mainProjects.length + 2) * 0.2}
+        />
       ))}
-    </Container>
+    </Section>
   );
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Container, Typography, Grid, Card, CardContent, Chip, Box } from '@mui/material';
+import { Grid, Card, CardContent, Chip, Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import FadeInView from './FadeInView';
-
+import Section from './Section';
 import { skills } from '../data/portfolioData';
 
 const Skills = () => {
@@ -18,14 +18,11 @@ const Skills = () => {
   };
 
   return (
-    <Container component="section" id="skills" data-track-visibility="true" sx={{ py: 8 }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center">
-        Skills
-      </Typography>
+    <Section title="Skills" id="skills">
       <Grid container spacing={4} justifyContent="center">
         {Object.entries(skills).map(([category, list], index) => (
           <Grid item key={category} xs={12} sm={6} md={4}>
-            <FadeInView delay={index * 0.2}>
+            <FadeInView delay={(index + 1) * 0.2}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h5" component="h3" gutterBottom align="center" color="primary.main">
@@ -42,7 +39,7 @@ const Skills = () => {
           </Grid>
         ))}
       </Grid>
-    </Container>
+    </Section>
   );
 };
 

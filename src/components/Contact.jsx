@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Typography, Box, TextField, Button, Snackbar, Alert, Card, CardContent } from '@mui/material';
+import { Box, TextField, Button, Snackbar, Alert, Card, CardContent, Typography } from '@mui/material';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import DownloadIcon from '@mui/icons-material/Download';
 import FadeInView from './FadeInView';
+import Section from './Section';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -73,11 +74,7 @@ const Contact = () => {
   const handleCloseSnackbar = () => setStatus({ ...status, success: false, error: false });
 
   return (
-    <Container component="section" id="contact" data-track-visibility="true" sx={{ py: 8 }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center">
-        Contact Me
-      </Typography>
-      
+    <Section title="Contact Me" id="contact">
       <FadeInView delay={0.2}>
         <Card
           component="form" 
@@ -144,7 +141,7 @@ const Contact = () => {
           {status.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </Section>
   );
 };
 
