@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Menu, MenuItem, useTheme } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, IconButton, Menu, MenuItem, useTheme, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CreateIcon from '@mui/icons-material/Create';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useColorMode } from '../theme';
+import AutoAwesome from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlined from '@mui/icons-material/AutoAwesomeOutlined';
+import { useCustomTheme } from '../theme';
 
 const Header = () => {
   const theme = useTheme();
-  const colorMode = useColorMode();
+  const themeController = useCustomTheme();
   const navItems = ['Home', 'Experience', 'Projects', 'Achievements', 'Skills', 'Contact'];
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -37,21 +39,71 @@ const Header = () => {
             </Menu>
           </Box>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: { xs: 1, md: 0 }, fontWeight: 'bold', color: 'primary.main' }}>
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ 
+              flexGrow: 1, 
+              ml: { xs: 1, md: 0 }, 
+              fontWeight: 'bold', 
+              color: 'primary.main',
+              fontFamily: themeController.retroMode ? '"VT323", monospace' : 'inherit',
+              fontSize: themeController.retroMode ? '1.4rem' : 'inherit',
+            }}
+          >
             Tejaswee Sulekh
           </Typography>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
             {navItems.map((item) => (
-              <Button key={item} color="inherit" href={`#${item.toLowerCase()}`} sx={{ '&:hover': { color: 'primary.main' } }}>
+              <Button 
+                key={item} 
+                color="inherit" 
+                href={`#${item.toLowerCase()}`} 
+                sx={{ 
+                  '&:hover': { color: 'primary.main' },
+                  fontFamily: themeController.retroMode ? '"VT323", monospace' : 'inherit'
+                }}
+              >
                 {item}
               </Button>
             ))}
           </Box>
 
-          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
+          <Tooltip title="Toggle Retro Mode (Experimental)">
+            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+              <IconButton sx={{ ml: 1 }} onClick={themeController.toggleRetroMode} color="inherit">
+                {themeController.retroMode ? <AutoAwesome /> : <AutoAwesomeOutlined />}
+              </IconButton>
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  position: 'absolute', 
+                  top: 2, 
+                  right: -2, 
+                  fontSize: '0.65rem', 
+                  backgroundColor: 'primary.main', 
+                  color: 'primary.contrastText',
+                  px: 0.6,
+                  py: 0.1,
+                  borderRadius: '10px',
+                  fontWeight: 'bold',
+                  pointerEvents: 'none',
+                  fontFamily: '"Inter", sans-serif',
+                  lineHeight: 1
+                }}
+              >
+                WIP
+              </Typography>
+            </Box>
+          </Tooltip>
+
+
+          <Tooltip title="Toggle Dark/Light Mode">
+            <IconButton sx={{ ml: 1 }} onClick={themeController.toggleColorMode} color="inherit">
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Tooltip>
 
           <Button
             variant="contained"

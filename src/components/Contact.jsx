@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Typography, Box, TextField, Button, Snackbar, Alert } from '@mui/material';
+import { Box, TextField, Button, Snackbar, Alert, Card, CardContent, Typography } from '@mui/material';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import DownloadIcon from '@mui/icons-material/Download';
 import FadeInView from './FadeInView';
+import Section from './Section';
+import { useCustomTheme } from '../theme';
 
 const Contact = () => {
+  const { retroMode } = useCustomTheme();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState({ submitting: false, success: false, error: false, message: '' });
   const [canSubmit, setCanSubmit] = useState(true);
@@ -73,63 +76,77 @@ const Contact = () => {
   const handleCloseSnackbar = () => setStatus({ ...status, success: false, error: false });
 
   return (
-    <Container component="section" id="contact" data-track-visibility="true" sx={{ py: 8 }}>
-      <Typography variant="h4" component="h2" gutterBottom align="center">
-        Contact Me
-      </Typography>
-      
+    <Section title="Contact Me" id="contact">
       <FadeInView delay={0.2}>
-        <Box 
+        <Card
           component="form" 
           onSubmit={handleSubmit}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '600px', mx: 'auto', p: 3, borderRadius: 2, boxShadow: '0 4px 20px 0 rgba(0,0,0,0.1)' }}
+          sx={{ maxWidth: '600px', mx: 'auto', p: 1, '&:hover': { transform: 'none' } }}
         >
-          <TextField label="Your Name" name="name" value={formData.name} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
-          <TextField label="Your Email" name="email" type="email" value={formData.email} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
-          <TextField label="Your Message" name="message" value={formData.message} onChange={handleChange} variant="outlined" multiline rows={4} required disabled={status.submitting || !canSubmit} />
-          
-          <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
-            <HCaptcha sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" onVerify={onCaptchaChange} ref={captchaRef} />
-          </Box>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField label="Your Name" name="name" value={formData.name} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
+            <TextField label="Your Email" name="email" type="email" value={formData.email} onChange={handleChange} variant="outlined" required disabled={status.submitting || !canSubmit} />
+            <TextField label="Your Message" name="message" value={formData.message} onChange={handleChange} variant="outlined" multiline rows={4} required disabled={status.submitting || !canSubmit} />
+            
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
+              <HCaptcha sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" onVerify={onCaptchaChange} ref={captchaRef} />
+            </Box>
 
-          <Button 
-            variant="contained" 
-            type="submit" 
-            fullWidth 
-            disabled={status.submitting || !canSubmit} 
-            data-umami-event="Contact Form Submitted"
-            sx={{ transition: 'transform 0.2s', '&:hover': { transform: !canSubmit ? 'none' : 'scale(1.02)' } }}>
-            {!canSubmit ? 'Daily Limit Reached' : status.submitting ? 'Sending...' : 'Send Message'}
-          </Button>
-        </Box>
+            <Button 
+              variant="contained" 
+              type="submit" 
+              fullWidth 
+              disabled={status.submitting || !canSubmit} 
+              data-umami-event="Contact Form Submitted"
+              sx={{ transition: 'transform 0.2s', '&:hover': { transform: !canSubmit ? 'none' : 'scale(1.02)' } }}>
+              {!canSubmit ? 'Daily Limit Reached' : status.submitting ? 'Sending...' : 'Send Message'}
+            </Button>
+          </CardContent>
+        </Card>
       </FadeInView>
 
       <FadeInView delay={0.4}>
-        <Box sx={{ mt: 6, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+        <Box 
+          sx={{ 
+            mt: 6, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            textAlign: 'center',
+            p: retroMode ? 4 : 0,
+            border: retroMode ? (theme) => `2px dashed ${theme.palette.primary.main}` : 'none',
+            backgroundColor: retroMode ? (theme) => `${theme.palette.primary.main}08` : 'transparent',
+            position: 'relative'
+          }}
+        >
+          <Typography 
+            variant="h6" 
+            color="text.secondary" 
+            gutterBottom
+            sx={{ fontFamily: retroMode ? '"VT323", monospace' : 'inherit' }}
+          >
             Prefer to just grab my resume?
           </Typography>
           <Button 
-            variant="outlined" 
+            variant={retroMode ? "contained" : "outlined"}
             href="/Tejaswee_Sulekh_Resume.pdf" 
             download="Tejaswee_Sulekh_Resume.pdf"
             startIcon={<DownloadIcon />}
             data-umami-event="Resume Downloaded"
-            sx={{ 
-              mt: 1, 
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.3)', 
-              borderRadius: '30px', 
+            sx={{
+              mt: 1,
+              borderRadius: retroMode ? 0 : '30px',
               padding: '10px 28px',
-              textTransform: 'none', 
+              textTransform: 'none',
               fontSize: '1.1rem',
-              backdropFilter: 'blur(10px)', 
+              backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease-in-out',
+              // Let the theme handle the colors for outlined buttons
               '&:hover': {
                 borderColor: 'primary.main',
-                boxShadow: '0 0 20px rgba(144, 202, 249, 0.4)', 
-                transform: 'translateY(-3px)',
-                backgroundColor: 'rgba(144, 202, 249, 0.05)' 
+                boxShadow: (theme) => retroMode ? `4px 4px 0px ${theme.palette.primary.main}` : `0 0 20px ${theme.palette.primary.main}66`,
+                transform: retroMode ? 'none' : 'translateY(-3px)',
+                backgroundColor: (theme) => retroMode ? 'primary.main' : `${theme.palette.primary.main}1a`,
               }
             }}
           >
@@ -143,7 +160,7 @@ const Contact = () => {
           {status.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </Section>
   );
 };
 

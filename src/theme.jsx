@@ -2,47 +2,46 @@ import React, { createContext, useContext, useMemo, useState, useEffect } from '
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const ColorModeContext = createContext({ toggleColorMode: () => {} });
+// 1. RENAME THE CONTEXT AND HOOK
+const CustomThemeContext = createContext({ 
+  toggleColorMode: () => {},
+  toggleRetroMode: () => {},
+  retroMode: false,
+});
 
-export const useColorMode = () => useContext(ColorModeContext);
+export const useCustomTheme = () => useContext(CustomThemeContext);
 
-/**
- * REFINED DESIGNER SCHEMES
- * Focus: High contrast for Dark Mode, Depth-rich Light Mode.
- */
 const schemes = {
-  // Option: SlateMint (Minted Light Mode)
   slateMint: {
     dark: {
-      primary: '#2dd4bf',    // Vibrant Mint
+      primary: '#2dd4bf',
       secondary: '#5eead4',
-      background: '#020617', // Midnight Slate
-      paper: '#0f172a',      // Slate-900
+      background: '#020617',
+      paper: '#0f172a',
       text: '#f1f5f9',
     },
     light: {
-      primary: '#0d9488',    // Dark Teal
+      primary: '#0d9488',
       secondary: '#14b8a6',
-      background: '#fcfaf7', // Back to the warmer Parchment White
+      background: '#fcfaf7',
       paper: '#ffffff',
-      text: '#042f2e',       // Deep Teal-Black for contrast
+      text: '#042f2e',
     }
   },
-  // Option: ObsidianGold (True Black Luxury)
   obsidianGold: {
     dark: {
-      primary: '#fbbf24',    // Amber Gold
+      primary: '#fbbf24',
       secondary: '#f59e0b',
-      background: '#0a0a0a', // True Obsidian Black
-      paper: '#141414',      // Elevated surface
+      background: '#0a0a0a',
+      paper: '#141414',
       text: '#fffbeb',
     },
     light: {
-      primary: '#92400e',    // Deep Bronze-Gold
+      primary: '#92400e',
       secondary: '#b45309',
-      background: '#fdf8ec', // Warm Champagne Cream
+      background: '#fdf8ec',
       paper: '#ffffff',
-      text: '#451a03',       // Deep Brown-Black
+      text: '#451a03',
     }
   }
 };
@@ -50,20 +49,25 @@ const schemes = {
 const ACTIVE_SCHEME_NAME = 'slateMint'; 
 const ACTIVE_SCHEME = schemes[ACTIVE_SCHEME_NAME];
 
-export const ColorModeProvider = ({ children }) => {
+// 2. RENAME THE PROVIDER
+export const CustomThemeProvider = ({ children }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState('dark');
+  const [retroMode, setRetroMode] = useState(false); // 3. ADD NEW RETRO MODE STATE
 
   useEffect(() => {
     const savedMode = localStorage.getItem('themeMode');
+    const savedRetroMode = localStorage.getItem('retroMode') === 'true';
+    
     if (savedMode) {
       setMode(savedMode);
     } else {
       setMode(prefersDarkMode ? 'dark' : 'light');
     }
+    setRetroMode(savedRetroMode);
   }, [prefersDarkMode]);
 
-  const colorMode = useMemo(
+  const themeController = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => {
@@ -72,21 +76,32 @@ export const ColorModeProvider = ({ children }) => {
           return newMode;
         });
       },
+      // 4. ADD RETRO MODE TOGGLE FUNCTION
+      toggleRetroMode: () => {
+        setRetroMode((prevRetro) => {
+          const newRetro = !prevRetro;
+          localStorage.setItem('retroMode', newRetro);
+          return newRetro;
+        });
+      },
+      retroMode, // Expose retroMode state
     }),
-    [],
+    [retroMode], // Add retroMode to dependency array
   );
 
   const theme = useMemo(
-    () =>
-      createTheme({
+    () => {
+      // 5. GET THE BASE THEME DEFINITION
+      const baseTheme = {
         palette: {
           mode,
           primary: {
             main: ACTIVE_SCHEME[mode].primary,
-            contrastText: mode === 'dark' ? '#000' : '#fff',
+            contrastText: mode === 'dark' ? '#000000' : '#ffffff',
           },
           secondary: {
             main: ACTIVE_SCHEME[mode].secondary,
+            contrastText: mode === 'dark' ? '#000000' : '#ffffff',
           },
           background: {
             default: ACTIVE_SCHEME[mode].background,
@@ -99,11 +114,6 @@ export const ColorModeProvider = ({ children }) => {
         },
         typography: {
           fontFamily: '"Inter", "system-ui", "-apple-system", sans-serif',
-          h1: { fontWeight: 800, letterSpacing: '-0.025em' },
-          h2: { fontWeight: 700, letterSpacing: '-0.02em' },
-          h3: { fontWeight: 700 },
-          h4: { fontWeight: 600 },
-          button: { textTransform: 'none', fontWeight: 600 },
         },
         shape: {
           borderRadius: 12,
@@ -112,18 +122,7 @@ export const ColorModeProvider = ({ children }) => {
           MuiCssBaseline: {
             styleOverrides: {
               body: {
-                transition: 'background-color 0.4s ease, color 0.4s ease',
-                '&::-webkit-scrollbar': {
-                  width: '8px',
-                },
-                '&::-webkit-scrollbar-track': {
-                  background: ACTIVE_SCHEME[mode].background,
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  background: mode === 'dark' ? '#334155' : '#cbd5e1',
-                  borderRadius: '10px',
-                },
-                // Re-adding the mesh gradient subtle depth
+                transition: 'background-color 0.4s ease',
                 backgroundImage: mode === 'dark' 
                   ? `radial-gradient(at 0% 0%, ${ACTIVE_SCHEME.dark.primary}10 0, transparent 50%), radial-gradient(at 100% 100%, ${ACTIVE_SCHEME.dark.secondary}10 0, transparent 50%)`
                   : `radial-gradient(at 0% 0%, ${ACTIVE_SCHEME.light.primary}05 0, transparent 50%), radial-gradient(at 100% 100%, ${ACTIVE_SCHEME.light.secondary}05 0, transparent 50%)`,
@@ -142,34 +141,21 @@ export const ColorModeProvider = ({ children }) => {
               },
             },
           },
-          MuiIconButton: {
-            styleOverrides: {
-              root: {
-                color: ACTIVE_SCHEME[mode].text,
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                  transform: 'rotate(15deg)',
-                }
-              }
-            }
-          },
           MuiCard: {
             styleOverrides: {
               root: {
                 borderRadius: 24,
                 backgroundImage: 'none',
-                // RESTORING previous opacity/background (not too transparent)
-                backgroundColor: mode === 'dark' 
-                  ? `${ACTIVE_SCHEME[mode].paper}` 
-                  : '#ffffff',
-                border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'}`,
+                backgroundColor: mode === 'dark' ? 'rgba(15, 23, 42, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(12px)',
+                border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`,
                 transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
                 '&:hover': {
                   transform: 'translateY(-12px)',
                   boxShadow: mode === 'dark' 
-                    ? `0 30px 60px -15px rgba(0,0,0,0.8), 0 0 20px -5px ${ACTIVE_SCHEME[mode].primary}44` 
-                    : `0 30px 60px -15px rgba(0,0,0,0.1), 0 0 15px -5px ${ACTIVE_SCHEME[mode].primary}22`,
-                  borderColor: `${ACTIVE_SCHEME[mode].primary}88`,
+                    ? `0 30px 60px -15px rgba(0,0,0,0.7), 0 0 20px -5px ${ACTIVE_SCHEME[mode].primary}33` 
+                    : `0 30px 60px -15px rgba(0,0,0,0.15), 0 0 15px -5px ${ACTIVE_SCHEME[mode].primary}22`,
+                  borderColor: `${ACTIVE_SCHEME[mode].primary}99`,
                 },
               },
             },
@@ -186,16 +172,82 @@ export const ColorModeProvider = ({ children }) => {
               },
             },
           },
+          MuiOutlinedInput: {
+            styleOverrides: {
+              root: {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.23)' : 'rgba(0, 0, 0, 0.23)',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: ACTIVE_SCHEME[mode].primary,
+                },
+              }
+            }
+          }
         },
-      }),
-    [mode],
+      };
+
+      // 6. IF RETRO MODE IS ON, AUGMENT THE THEME
+      if (retroMode) {
+        baseTheme.typography.h1 = { fontFamily: '"VT323", monospace', textShadow: mode === 'dark' ? '0 0 8px rgba(45, 212, 191, 0.5)' : 'none' };
+        baseTheme.typography.h2 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.h3 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.h4 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.h5 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.h6 = { fontFamily: '"VT323", monospace' };
+        baseTheme.typography.subtitle1 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
+        baseTheme.typography.subtitle2 = { fontFamily: '"VT323", monospace', fontSize: '1rem' };
+        baseTheme.typography.body1 = { fontFamily: '"VT323", monospace', fontSize: '1.1rem' };
+        baseTheme.typography.body2 = { fontFamily: '"VT323", monospace', fontSize: '1rem' };
+        baseTheme.typography.button = { fontFamily: '"VT323", monospace', fontSize: '1.1rem', letterSpacing: '1px' };
+        
+        baseTheme.shape.borderRadius = 0; // Square corners for retro look
+        
+        baseTheme.components.MuiCssBaseline = {
+          styleOverrides: {
+            body: {
+              ...baseTheme.components.MuiCssBaseline.styleOverrides.body,
+              position: 'relative',
+              overflowX: 'hidden',
+            }
+          }
+        };
+
+        baseTheme.components.MuiCard.styleOverrides.root = {
+          ...baseTheme.components.MuiCard.styleOverrides.root,
+          borderRadius: 0,
+          boxShadow: mode === 'dark' ? '4px 4px 0px #334155' : '4px 4px 0px #ccc',
+          border: `2px solid ${ACTIVE_SCHEME[mode].primary}`,
+          backgroundColor: mode === 'dark' ? '#0a0a0a' : '#f5f5f5',
+          '&:hover': {
+            transform: 'translate(-2px, -2px)',
+            boxShadow: mode === 'dark' ? '6px 6px 0px #334155' : '6px 6px 0px #ccc',
+            borderColor: ACTIVE_SCHEME[mode].primary,
+          }
+        };
+
+        baseTheme.components.MuiButton.styleOverrides.root = {
+          ...baseTheme.components.MuiButton.styleOverrides.root,
+          borderRadius: 0,
+          border: `2px solid transparent`,
+          '&:hover': {
+            transform: 'none',
+            border: `2px solid ${ACTIVE_SCHEME[mode].primary}`,
+            boxShadow: `4px 4px 0px ${mode === 'dark' ? '#334155' : '#ccc'}`,
+          },
+        };
+      }
+      
+      return createTheme(baseTheme);
+    },
+    [mode, retroMode], // Add retroMode to dependency array
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <CustomThemeContext.Provider value={themeController}>
       <ThemeProvider theme={theme}>
         {children}
       </ThemeProvider>
-    </ColorModeContext.Provider>
+    </CustomThemeContext.Provider>
   );
 };
