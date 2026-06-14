@@ -48,26 +48,56 @@ const Header = () => {
               fontWeight: 'bold', 
               color: 'primary.main',
               fontFamily: themeController.retroMode ? '"VT323", monospace' : 'inherit',
-              fontSize: themeController.retroMode ? '1.5rem' : 'inherit',
-              letterSpacing: themeController.retroMode ? '1px' : 'normal'
+              fontSize: themeController.retroMode ? '1.4rem' : 'inherit',
             }}
           >
-            {themeController.retroMode ? 'Tejaswee Sulekh' : 'Tejaswee Sulekh'}
+            Tejaswee Sulekh
           </Typography>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
             {navItems.map((item) => (
-              <Button key={item} color="inherit" href={`#${item.toLowerCase()}`} sx={{ '&:hover': { color: 'primary.main' } }}>
+              <Button 
+                key={item} 
+                color="inherit" 
+                href={`#${item.toLowerCase()}`} 
+                sx={{ 
+                  '&:hover': { color: 'primary.main' },
+                  fontFamily: themeController.retroMode ? '"VT323", monospace' : 'inherit'
+                }}
+              >
                 {item}
               </Button>
             ))}
           </Box>
 
-          <Tooltip title="Toggle Retro Mode">
-            <IconButton sx={{ ml: 1 }} onClick={themeController.toggleRetroMode} color="inherit">
-              {themeController.retroMode ? <AutoAwesome /> : <AutoAwesomeOutlined />}
-            </IconButton>
+          <Tooltip title="Toggle Retro Mode (Experimental)">
+            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+              <IconButton sx={{ ml: 1 }} onClick={themeController.toggleRetroMode} color="inherit">
+                {themeController.retroMode ? <AutoAwesome /> : <AutoAwesomeOutlined />}
+              </IconButton>
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  position: 'absolute', 
+                  top: 2, 
+                  right: -2, 
+                  fontSize: '0.65rem', 
+                  backgroundColor: 'primary.main', 
+                  color: 'primary.contrastText',
+                  px: 0.6,
+                  py: 0.1,
+                  borderRadius: '10px',
+                  fontWeight: 'bold',
+                  pointerEvents: 'none',
+                  fontFamily: '"Inter", sans-serif',
+                  lineHeight: 1
+                }}
+              >
+                WIP
+              </Typography>
+            </Box>
           </Tooltip>
+
 
           <Tooltip title="Toggle Dark/Light Mode">
             <IconButton sx={{ ml: 1 }} onClick={themeController.toggleColorMode} color="inherit">
