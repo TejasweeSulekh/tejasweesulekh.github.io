@@ -36,12 +36,21 @@
           try {
             // 1. Memory check to save API calls
             let organization = sessionStorage.getItem('b2b_org');
+            let isVpn = sessionStorage.getItem('b2b_vpn');
 
             if (!organization) {
               const response = await fetch('https://ipinfo.io/json?token=%VITE_IPINFO_TOKEN%');
               const data = await response.json();
               organization = data.org || 'Unknown Network';
+              
+              // Advanced VPN / Datacenter Heuristic
+              const orgLower = organization.toLowerCase();
+              const vpnKeywords = ['vpn', 'proxy', 'aws', 'amazon', 'google cloud', 'azure', 'digitalocean', 'linode', 'hetzner', 'ovh', 'datacenter', 'hosting', 'cloudflare', 'fastly'];
+              const vpnDetected = vpnKeywords.some(kw => orgLower.includes(kw));
+              isVpn = vpnDetected ? 'true' : 'false';
+
               sessionStorage.setItem('b2b_org', organization);
+              sessionStorage.setItem('b2b_vpn', isVpn);
             }
 
             // 2. Define the exact tracking payload
@@ -49,7 +58,7 @@
               if (window.umami) {
                 window.umami.track(props => ({
                   ...props,
-                  data: { company: organization }
+                  data: { company: organization, vpn: isVpn === 'true' }
                 }));
               }
             };
